@@ -45,19 +45,6 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
-
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
@@ -72,12 +59,51 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](LICENSE).
 
-## 의존성 주입
+## Api Document 스웨거 접속 방법
+
+http://localhost:3000/api-docs
+
+user: medly
+password: P@assword
+
+## 새 모듈 생성하는 법
+
+```bash
+$ nest g resource <엔티티명>
+```
+
+## 테스트 데이터 만드는 법
+
+1. `src > database > data-source.ts` 파일에서 새로운 엔티티를 `entities: [UsersEntity, UserLogsEntity],`에 추가합니다.
+2. `src > seeds` 폴더에 해당 엔티티에 해당되는 데이터를 추가합니다.
+3. `yarn seed:reset` 명령어를 실행합니다.
+
+4. `src > database > data-source.ts`
+
+새로운 엔티티를 `entities: [UsersEntity, UserLogsEntity],`에 추가합니다.
+
+2. `src > seeds`
+
+해당 엔티티에 해당되는 데이터를 추가합니다.
+
+3. `yarn seed:reset` 명령어를 실행합니다.
 
 ## 조인 하는법
 
-## 테스트 데이터 만드는법
+### 1:N 관계
 
-## Api Document 스웨거 접속 방법
+#### Users 엔티티
 
-## http://localhost:3000/api-docs
+```typescript
+@OneToMany(() => UserLogsEntity, (userLogs) => userLogs.user)
+userLogs: UserLogsEntity[];
+```
+
+#### UserLogs 엔티티
+
+```typescript
+@ManyToOne(() => UsersEntity, (user) => user.userLogs)
+user: UsersEntity;
+```
+
+## 의존성 주입
