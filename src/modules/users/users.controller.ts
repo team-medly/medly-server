@@ -1,4 +1,4 @@
-import { Controller, Delete, Param, Query } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Query } from '@nestjs/common';
 import {
   ApiOperation,
   ApiOkResponse,
@@ -8,13 +8,34 @@ import {
 } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
-import { DeleteUserByIdxParam } from './dto/reqParam.dto';
+import {
+  DeleteUserByIdxParam,
+  GetUserLogsByPatientIdParam,
+} from './dto/reqParam.dto';
 import { DeleteUserByIdxQuery } from './dto/reqQuery.dto';
 
 @ApiTags('유저 API')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Get('/getRecords/:patientId')
+  @ApiOperation({
+    summary: '환자 수술 기록 조회 API',
+    description: '환자의 수술 기록을 조회한다',
+  })
+  @ApiOkResponse({
+    description: 'DB 조회 성공',
+  })
+  @ApiNotFoundResponse({ description: 'DB가 존재하지 않음' })
+  @ApiInternalServerErrorResponse({
+    description: '서버가 이해하지 못한 케이스',
+  })
+  async getUserLogsByPatientId(@Param() param: GetUserLogsByPatientIdParam) {
+    const { patientId } = param;
+
+    return await this.usersService.getUserLogsByPatientId(patientId);
+  }
 
   @Delete('/:userIdx')
   @ApiOperation({

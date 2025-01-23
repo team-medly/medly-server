@@ -28,6 +28,26 @@ export class UsersService {
     }
   }
 
+  async getUserLogsByPatientId(patientId: number) {
+    try {
+      const queryBuilder = this.usersRepo
+        .createQueryBuilder(`users`)
+        .leftJoinAndSelect(`users.userLogs`, `userLogs`)
+        .where(`users.patientId = :patientId`, {
+          patientId,
+        });
+
+      /** @description 쿼리 조건식 추가할때 아래와 같이 사용 */
+      queryBuilder.andWhere(`users.deletedAt IS NULL`);
+
+      const userLogs = await queryBuilder.getRawMany();
+
+      return { userLogs };
+    } catch (err) {
+      handlingError(err);
+    }
+  }
+
   async deleteUserByIdx(idx: number, reason: string) {
     const currentTime = new Date();
 

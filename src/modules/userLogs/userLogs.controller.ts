@@ -15,7 +15,7 @@ import { AddUserLogParam } from './dto/reqParam.dto';
 export class UserLogsController {
   constructor(private readonly userLogsService: UserLogsService) {}
 
-  @Post('/:userIdx')
+  @Post('/addRecord/:userIdx')
   @ApiOperation({
     summary: '유저 수술 기록 생성 API',
     description: '유저 수술 기록 생성',
