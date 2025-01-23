@@ -1,13 +1,16 @@
-import { UserLogsEntity } from 'src/modules/userLogs/entity/userLogs.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { UserLogsEntity } from 'src/modules/userLogs/entity/userLogs.entity';
+import { WithdrawalLogsEntity } from 'src/modules/withdrawalLogs/entity/withdrawalLogs.entity';
 
 @Entity('users')
 export class UsersEntity {
@@ -62,4 +65,7 @@ export class UsersEntity {
 
   @OneToMany(() => UserLogsEntity, (userLogs) => userLogs.user)
   userLogs: UserLogsEntity[];
+
+  @OneToOne(() => WithdrawalLogsEntity, (withdrawalLog) => withdrawalLog.user)
+  withdrawalLog: WithdrawalLogsEntity;
 }
