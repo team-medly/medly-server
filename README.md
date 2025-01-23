@@ -22,17 +22,13 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+## 설치방법
 
 ```bash
 $ yarn install
 ```
 
-## Running the app
+## 앱 실행 방법
 
 ```bash
 # development
@@ -45,19 +41,46 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-## Support
+## 앱 구조
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+```plaintext
+medly-server
+├── src
+│   ├── app.module.ts
+│   ├── main.ts
+│   ├── users
+│   │   ├── users.controller.ts
+│   │   ├── users.module.ts
+│   │   ├── users.service.ts
+│   │   └── entities
+│   │       └── users.entity.ts
+│   ├── withdrawal-logs
+│   │   ├── withdrawal-logs.controller.ts
+│   │   ├── withdrawal-logs.module.ts
+│   │   ├── withdrawal-logs.service.ts
+│   │   └── entities
+│   │       └── withdrawal-logs.entity.ts
+│   ├── user-logs
+│   │   ├── user-logs.controller.ts
+│   │   ├── user-logs.module.ts
+│   │   ├── user-logs.service.ts
+│   │   └── entities
+│   │       └── user-logs.entity.ts
+│   └── database
+│       ├── data-source.ts
+│       └── seeds
+│           └── seed.ts
+├── test
+│   ├── app.e2e-spec.ts
+│   └── jest-e2e.json
+├── .env
+├── .eslintrc.js
+├── .prettierrc
+├── nest-cli.json
+├── package.json
+├── tsconfig.build.json
+└── tsconfig.json
+```
 
 ## Api Document 스웨거 접속 방법
 
@@ -167,3 +190,17 @@ const withdrawalLog = await this.withdrawalLogsService.addWithdrawalLogs(
   reason,
 );
 ```
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](LICENSE).
