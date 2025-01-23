@@ -191,6 +191,19 @@ const withdrawalLog = await this.withdrawalLogsService.addWithdrawalLogs(
 );
 ```
 
+## .env 파일 예시
+
+DB_DATABASE=medly_local
+DB_HOST=localhost
+DB_SYNCHRONIZE=true
+DB_USERNAME=
+DB_PASSWORD=
+DB_PORT=3306
+SERVER_PORT=3000
+AZURE_DB_SSL=
+LETS_ENCRYPT_PRIVKEY_PATH=
+LETS_ENCRYPT_FULLCHAIN_PATH=
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
