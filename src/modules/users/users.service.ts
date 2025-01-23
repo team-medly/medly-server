@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { UsersEntity } from './entity/users.entity';
 import { handlingError } from 'src/common/utils/handlingError';
+import { WithdrawalLogsService } from '../withdrawalLogs/withdrawalLogs.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UsersEntity)
     private usersRepo: Repository<UsersEntity>,
-    private dataSource: DataSource,
+    private withdrawalLogsService: WithdrawalLogsService,
   ) {}
 
   async getUserByPatientId(patientId: string) {
@@ -31,12 +32,17 @@ export class UsersService {
     const currentTime = new Date();
 
     try {
+      const withdrawalLog = await this.withdrawalLogsService.addWithdrawalLogs(
+        idx,
+        reason,
+      );
+
       const deletedUser = await this.usersRepo.update(
         { idx },
         { deletedAt: currentTime },
       );
 
-      return { deletedUser };
+      return { withdrawalLog, deletedUser };
     } catch (error) {
       handlingError(error);
     }

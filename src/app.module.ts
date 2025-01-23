@@ -8,6 +8,8 @@ import { UsersModule } from './modules/users/users.module';
 import { UsersEntity } from './modules/users/entity/users.entity';
 import { UserLogsModule } from './modules/userLogs/userLogs.module';
 import { UserLogsEntity } from './modules/userLogs/entity/userLogs.entity';
+import { WithdrawalLogsModule } from './modules/withdrawalLogs/withdrawalLogs.module';
+import { WithdrawalLogsEntity } from './modules/withdrawalLogs/entity/withdrawalLogs.entity';
 
 @Module({
   imports: [
@@ -31,7 +33,7 @@ import { UserLogsEntity } from './modules/userLogs/entity/userLogs.entity';
           username: process.env.DB_USERNAME,
           password: process.env.DB_PASSWORD,
           database: process.env.DB_DATABASE,
-          entities: [UsersEntity, UserLogsEntity],
+          entities: [UsersEntity, UserLogsEntity, WithdrawalLogsEntity],
           synchronize: process.env.DB_SYNCHRONIZE === 'true',
           logging: true,
           timezone: 'Z',
@@ -46,6 +48,7 @@ import { UserLogsEntity } from './modules/userLogs/entity/userLogs.entity';
     }),
     UsersModule,
     UserLogsModule,
+    WithdrawalLogsModule,
   ],
 })
 export class AppModule implements NestModule {

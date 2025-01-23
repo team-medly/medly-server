@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 
 import { UsersEntity } from '../modules/users/entity/users.entity';
 import { UserLogsEntity } from '../modules/userLogs/entity/userLogs.entity';
+import { WithdrawalLogsEntity } from '../modules/withdrawalLogs/entity/withdrawalLogs.entity';
 
 dotenv.config({
   path: '.env',
@@ -22,7 +23,7 @@ const options: DataSourceOptions & SeederOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 
-  entities: [UsersEntity, UserLogsEntity],
+  entities: [UsersEntity, UserLogsEntity, WithdrawalLogsEntity],
   seeds: ['src/database/seeds/**/*{.ts,.js}'],
   seedTracking: false,
   factories: ['src/database/factories/**/*{.ts,.js}'],
