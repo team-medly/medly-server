@@ -191,8 +191,9 @@ const withdrawalLog = await this.withdrawalLogsService.addWithdrawalLogs(
 );
 ```
 
-## .env 파일 예시
+## /.env 파일 예시
 
+```plaintext
 DB_DATABASE=medly_local
 DB_HOST=localhost
 DB_SYNCHRONIZE=true
@@ -203,6 +204,7 @@ SERVER_PORT=3000
 AZURE_DB_SSL=
 LETS_ENCRYPT_PRIVKEY_PATH=
 LETS_ENCRYPT_FULLCHAIN_PATH=
+```
 
 ## Support
 
