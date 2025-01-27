@@ -6,10 +6,18 @@ import * as path from 'path';
 
 import { UsersModule } from './modules/users/users.module';
 import { UsersEntity } from './modules/users/entity/users.entity';
-import { UserLogsModule } from './modules/userLogs/userLogs.module';
-import { UserLogsEntity } from './modules/userLogs/entity/userLogs.entity';
-import { WithdrawalLogsModule } from './modules/withdrawalLogs/withdrawalLogs.module';
-import { WithdrawalLogsEntity } from './modules/withdrawalLogs/entity/withdrawalLogs.entity';
+import { UserRecordsModule } from './modules/userRecords/userRecords.module';
+import { UserRecordsEntity } from './modules/userRecords/entity/userRecords.entity';
+import { UserWithdrawalLogsModule } from './modules/userWithdrawalLogs/userWithdrawalLogs.module';
+import { UserWithdrawalLogsEntity } from './modules/userWithdrawalLogs/entity/userWithdrawalLogs.entity';
+import { DoctorsModule } from './modules/doctors/doctors.module';
+import { DoctorWithdrawalLogsModule } from './modules/doctorWithdrawalLogs/doctorWithdrawalLogs.module';
+import { DoctorsEntity } from './modules/doctors/entities/doctor.entity';
+import { DoctorWithdrawalLogsEntity } from './modules/doctorWithdrawalLogs/entities/doctorWithdrawalLogs.entity';
+import { ChatUserHistoriesModule } from './modules/chatUserHistories/chatUserHistories.module';
+import { ChatUserHistoriesEntity } from './modules/chatUserHistories/entities/chatUserHistories.entity';
+import { ChatBotHistoriesModule } from './modules/chatBotHistories/chatBotHistories.module';
+import { ChatBotHistoriesEntity } from './modules/chatBotHistories/entities/chatBotHistories.entity';
 
 @Module({
   imports: [
@@ -33,7 +41,15 @@ import { WithdrawalLogsEntity } from './modules/withdrawalLogs/entity/withdrawal
           username: process.env.DB_USERNAME,
           password: process.env.DB_PASSWORD,
           database: process.env.DB_DATABASE,
-          entities: [UsersEntity, UserLogsEntity, WithdrawalLogsEntity],
+          entities: [
+            UsersEntity, 
+            UserRecordsEntity, 
+            UserWithdrawalLogsEntity, 
+            DoctorsEntity, 
+            DoctorWithdrawalLogsEntity, 
+            ChatUserHistoriesEntity, 
+            ChatBotHistoriesEntity
+          ],
           synchronize: process.env.DB_SYNCHRONIZE === 'true',
           logging: true,
           timezone: 'Z',
@@ -47,8 +63,12 @@ import { WithdrawalLogsEntity } from './modules/withdrawalLogs/entity/withdrawal
       },
     }),
     UsersModule,
-    UserLogsModule,
-    WithdrawalLogsModule,
+    UserRecordsModule,
+    UserWithdrawalLogsModule,
+    DoctorsModule,
+    DoctorWithdrawalLogsModule,
+    ChatUserHistoriesModule,
+    ChatBotHistoriesModule,
   ],
 })
 export class AppModule implements NestModule {

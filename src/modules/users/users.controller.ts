@@ -10,7 +10,7 @@ import {
 import { UsersService } from './users.service';
 import {
   DeleteUserByIdxParam,
-  GetUserLogsByPatientIdParam,
+  GetUserRecordsByPatientIdParam,
 } from './dto/reqParam.dto';
 import { DeleteUserByIdxQuery } from './dto/reqQuery.dto';
 
@@ -31,10 +31,10 @@ export class UsersController {
   @ApiInternalServerErrorResponse({
     description: '서버가 이해하지 못한 케이스',
   })
-  async getUserLogsByPatientId(@Param() param: GetUserLogsByPatientIdParam) {
+  async getUserRecordsByPatientId(@Param() param: GetUserRecordsByPatientIdParam) {
     const { patientId } = param;
 
-    return await this.usersService.getUserLogsByPatientId(patientId);
+    return await this.usersService.getUserRecordsByPatientId(patientId);
   }
 
   @Delete('/:userIdx')

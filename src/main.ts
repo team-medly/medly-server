@@ -6,6 +6,7 @@ import { setSwagger } from './common/utils/setSwagger';
 
 async function bootstrap() {
   const isProd = process.env.DB_DATABASE !== 'medly_local';
+  // const isProd = process.env.DB_DATABASE !== 'medly';
 
   const app = isProd
     ? await NestFactory.create(AppModule, {

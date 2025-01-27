@@ -2,28 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 
-import { UserLogsEntity } from './entity/userLogs.entity';
+import { UserRecordsEntity } from './entity/userRecords.entity';
 import { handlingError } from 'src/common/utils/handlingError';
 
 @Injectable()
-export class UserLogsService {
+export class UserRecordsService {
   constructor(
     private dataSource: DataSource,
-    @InjectRepository(UserLogsEntity)
-    private userLogsRepo: Repository<UserLogsEntity>,
+    @InjectRepository(UserRecordsEntity)
+    private userRecordsRepo: Repository<UserRecordsEntity>,
   ) {}
 
   async addUserLog(
     userIdx: number,
     nameOfSurgery: string,
     surgeryRecord: string,
-  ): Promise<UserLogsEntity> {
+  ): Promise<UserRecordsEntity> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
-      const newUserLog = this.userLogsRepo.create({
+      const newUserLog = this.userRecordsRepo.create({
         nameOfSurgery,
         surgeryRecord,
         user: { idx: userIdx } as any,

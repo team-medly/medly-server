@@ -10,8 +10,8 @@ import {
 
 import { UsersEntity } from 'src/modules/users/entity/users.entity';
 
-@Entity('userLogs')
-export class UserLogsEntity {
+@Entity('userRecords')
+export class UserRecordsEntity {
   @PrimaryGeneratedColumn({
     type: 'int',
     comment: '인덱스',
@@ -29,6 +29,13 @@ export class UserLogsEntity {
     comment: '수술 상세 기록 내용',
   })
   surgeryRecord: string;
+
+  @Column({
+    type: 'varchar',
+    comment: '수술 동의서 문서 등 서버 내 파일 저장 경로',
+    nullable: true
+  })
+  filePath: string;
 
   @CreateDateColumn({
     name: 'createdAt',
@@ -49,6 +56,6 @@ export class UserLogsEntity {
   })
   deletedAt: Date;
 
-  @ManyToOne(() => UsersEntity, (user) => user.userLogs)
+  @ManyToOne(() => UsersEntity, (user) => user.userRecords)
   user: UsersEntity;
 }

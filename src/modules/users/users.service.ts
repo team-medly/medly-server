@@ -4,14 +4,14 @@ import { Repository } from 'typeorm';
 
 import { UsersEntity } from './entity/users.entity';
 import { handlingError } from 'src/common/utils/handlingError';
-import { WithdrawalLogsService } from '../withdrawalLogs/withdrawalLogs.service';
+import { UserWithdrawalLogsService } from '../userWithdrawalLogs/userWithdrawalLogs.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UsersEntity)
     private usersRepo: Repository<UsersEntity>,
-    private withdrawalLogsService: WithdrawalLogsService,
+    private userWithdrawalLogsService: UserWithdrawalLogsService,
   ) {}
 
   async getUserByPatientId(patientId: string) {
@@ -28,11 +28,11 @@ export class UsersService {
     }
   }
 
-  async getUserLogsByPatientId(patientId: number) {
+  async getUserRecordsByPatientId(patientId: number) {
     try {
       const queryBuilder = this.usersRepo
         .createQueryBuilder(`users`)
-        .leftJoinAndSelect(`users.userLogs`, `userLogs`)
+        .leftJoinAndSelect(`users.userRecords`, `userRecords`)
         .where(`users.patientId = :patientId`, {
           patientId,
         });
@@ -40,9 +40,9 @@ export class UsersService {
       /** @description 쿼리 조건식 추가할때 아래와 같이 사용 */
       queryBuilder.andWhere(`users.deletedAt IS NULL`);
 
-      const userLogs = await queryBuilder.getRawMany();
+      const userRecords = await queryBuilder.getRawMany();
 
-      return { userLogs };
+      return { userRecords };
     } catch (err) {
       handlingError(err);
     }
@@ -52,7 +52,7 @@ export class UsersService {
     const currentTime = new Date();
 
     try {
-      const withdrawalLog = await this.withdrawalLogsService.addWithdrawalLogs(
+      const userWithdrawalLog = await this.userWithdrawalLogsService.addUserWithdrawalLogs(
         idx,
         reason,
       );
@@ -62,7 +62,7 @@ export class UsersService {
         { deletedAt: currentTime },
       );
 
-      return { withdrawalLog, deletedUser };
+      return { userWithdrawalLog, deletedUser };
     } catch (error) {
       handlingError(error);
     }
