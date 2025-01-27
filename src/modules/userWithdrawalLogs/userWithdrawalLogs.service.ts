@@ -2,33 +2,33 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 
-import { WithdrawalLogsEntity } from './entity/withdrawalLogs.entity';
+import { UserWithdrawalLogsEntity } from './entity/userWithdrawalLogs.entity';
 import { handlingError } from 'src/common/utils/handlingError';
 
 @Injectable()
-export class WithdrawalLogsService {
+export class UserWithdrawalLogsService {
   constructor(
     private dataSource: DataSource,
-    @InjectRepository(WithdrawalLogsEntity)
-    private withdrawalLogsRepo: Repository<WithdrawalLogsEntity>,
+    @InjectRepository(UserWithdrawalLogsEntity)
+    private userWithdrawalLogsRepo: Repository<UserWithdrawalLogsEntity>,
   ) {}
 
-  async addWithdrawalLogs(
+  async addUserWithdrawalLogs(
     userIdx: number,
     reason: string,
-  ): Promise<WithdrawalLogsEntity> {
+  ): Promise<UserWithdrawalLogsEntity> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
-      const newWithdrawalLogs = new WithdrawalLogsEntity();
-      newWithdrawalLogs.reason = reason;
-      newWithdrawalLogs.user = { idx: userIdx } as any;
-      const savedWithdrawalLogs =
-        await queryRunner.manager.save(newWithdrawalLogs);
+      const newUserWithdrawalLogs = new UserWithdrawalLogsEntity();
+      newUserWithdrawalLogs.reason = reason;
+      newUserWithdrawalLogs.user = { idx: userIdx } as any;
+      const savedUserWithdrawalLogs =
+        await queryRunner.manager.save(newUserWithdrawalLogs);
       await queryRunner.commitTransaction();
-      return savedWithdrawalLogs;
+      return savedUserWithdrawalLogs;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       handlingError(error);

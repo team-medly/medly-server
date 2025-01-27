@@ -4,10 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UsersEntity } from './entity/users.entity';
-import { WithdrawalLogsModule } from '../withdrawalLogs/withdrawalLogs.module';
+import { UserWithdrawalLogsModule } from '../userWithdrawalLogs/userWithdrawalLogs.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsersEntity]), WithdrawalLogsModule],
+  imports: [TypeOrmModule.forFeature([UsersEntity]), UserWithdrawalLogsModule],
   controllers: [UsersController],
   providers: [UsersService],
 })

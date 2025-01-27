@@ -1,12 +1,12 @@
 import { Seeder } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
-import { UserLogsEntity } from 'src/modules/userLogs/entity/userLogs.entity';
+import { UserRecordsEntity } from 'src/modules/userRecords/entity/userRecords.entity';
 
 export default class MoviesTranslationsSeeder implements Seeder {
   track = false;
 
   async run(dataSource: DataSource): Promise<void> {
-    const repository = dataSource.getRepository(UserLogsEntity);
+    const repository = dataSource.getRepository(UserRecordsEntity);
     await repository.insert([
       {
         nameOfSurgery: '흉부 수술',

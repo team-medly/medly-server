@@ -6,14 +6,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { UserLogsService } from './userLogs.service';
-import { AddUserLogBody } from './dto/reqBody.dto';
-import { AddUserLogParam } from './dto/reqParam.dto';
+import { UserRecordsService } from './userRecords.service';
+import { AddUserRecordBody } from './dto/reqBody.dto';
+import { AddUserRecordParam } from './dto/reqParam.dto';
 
 @ApiTags('유저 수술 기록 API')
-@Controller('userLogs')
-export class UserLogsController {
-  constructor(private readonly userLogsService: UserLogsService) {}
+@Controller('userRecords')
+export class UserRecordsController {
+  constructor(private readonly userRecordsService: UserRecordsService) {}
 
   @Post('/addRecord/:userIdx')
   @ApiOperation({
@@ -25,13 +25,13 @@ export class UserLogsController {
     description: '서버가 이해하지 못한 케이스',
   })
   async addUserLog(
-    @Param() param: AddUserLogParam,
-    @Body() body: AddUserLogBody,
+    @Param() param: AddUserRecordParam,
+    @Body() body: AddUserRecordBody,
   ) {
     const { userIdx } = param;
     const { nameOfSurgery, surgeryRecord } = body;
 
-    return await this.userLogsService.addUserLog(
+    return await this.userRecordsService.addUserLog(
       userIdx,
       nameOfSurgery,
       surgeryRecord,

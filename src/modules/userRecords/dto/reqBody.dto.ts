@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class AddUserLogBody {
+export class AddUserRecordBody {
   @ApiProperty({
     description: '수술 명',
     example: '관절 수술',

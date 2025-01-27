@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class AddUserLogParam {
+export class AddUserRecordParam {
   @ApiProperty({
     description: '유저 인덱스',
     example: 1,

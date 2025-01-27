@@ -9,8 +9,8 @@ import {
 
 import { UsersEntity } from 'src/modules/users/entity/users.entity';
 
-@Entity('withdrawalLogs')
-export class WithdrawalLogsEntity {
+@Entity('userWithdrawalLogs')
+export class UserWithdrawalLogsEntity {
   @PrimaryGeneratedColumn({
     type: 'int',
     comment: '인덱스',
@@ -29,7 +29,7 @@ export class WithdrawalLogsEntity {
   })
   createdAt: Date;
 
-  @OneToOne(() => UsersEntity, (user) => user.withdrawalLog)
+  @OneToOne(() => UsersEntity, (user) => user.userWithdrawalLog)
   @JoinColumn()
   user: UsersEntity;
 }

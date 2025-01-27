@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class GetUserLogsByPatientIdParam {
+export class GetUserRecordsByPatientIdParam {
   @ApiProperty({
     description: '환자 식별번호',
     example: 12345,
