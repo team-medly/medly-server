@@ -31,7 +31,9 @@ export class UsersController {
   @ApiInternalServerErrorResponse({
     description: '서버가 이해하지 못한 케이스',
   })
-  async getUserRecordsByPatientId(@Param() param: GetUserRecordsByPatientIdParam) {
+  async getUserRecordsByPatientId(
+    @Param() param: GetUserRecordsByPatientIdParam,
+  ) {
     const { patientId } = param;
 
     return await this.usersService.getUserRecordsByPatientId(patientId);

@@ -52,10 +52,8 @@ export class UsersService {
     const currentTime = new Date();
 
     try {
-      const userWithdrawalLog = await this.userWithdrawalLogsService.addUserWithdrawalLogs(
-        idx,
-        reason,
-      );
+      const userWithdrawalLog =
+        await this.userWithdrawalLogsService.addUserWithdrawalLogs(idx, reason);
 
       const deletedUser = await this.usersRepo.update(
         { idx },

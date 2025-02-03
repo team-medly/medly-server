@@ -33,7 +33,7 @@ export class UserRecordsEntity {
   @Column({
     type: 'varchar',
     comment: '수술 동의서 문서 등 서버 내 파일 저장 경로',
-    nullable: true
+    nullable: true,
   })
   filePath: string;
 

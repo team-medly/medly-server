@@ -28,13 +28,13 @@ const options: DataSourceOptions & SeederOptions = {
   database: process.env.DB_DATABASE,
 
   entities: [
-    UsersEntity, 
-    UserRecordsEntity, 
-    UserWithdrawalLogsEntity, 
-    DoctorsEntity, 
-    DoctorWithdrawalLogsEntity, 
-    ChatUserHistoriesEntity, 
-    ChatBotHistoriesEntity
+    UsersEntity,
+    UserRecordsEntity,
+    UserWithdrawalLogsEntity,
+    DoctorsEntity,
+    DoctorWithdrawalLogsEntity,
+    ChatUserHistoriesEntity,
+    ChatBotHistoriesEntity,
   ],
   seeds: ['src/database/seeds/**/*{.ts,.js}'],
   seedTracking: false,

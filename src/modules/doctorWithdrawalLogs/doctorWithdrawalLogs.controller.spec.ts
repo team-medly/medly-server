@@ -11,7 +11,9 @@ describe('DoctorWithdrawalLogsController', () => {
       providers: [DoctorWithdrawalLogsService],
     }).compile();
 
-    controller = module.get<DoctorWithdrawalLogsController>(DoctorWithdrawalLogsController);
+    controller = module.get<DoctorWithdrawalLogsController>(
+      DoctorWithdrawalLogsController,
+    );
   });
 
   it('should be defined', () => {

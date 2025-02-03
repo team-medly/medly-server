@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ChatUserHistoriesService } from './chatUserHistories.service';
 import { CreateChatUserHistoryDto } from './dto/createChatUserHistories.dto';
 import { UpdateChatUserHistoryDto } from './dto/updateChatUserHistories.dto';
 
 @Controller('chatUserHistories')
 export class ChatUserHistoriesController {
-  constructor(private readonly chatUserHistoriesService: ChatUserHistoriesService) {}
+  constructor(
+    private readonly chatUserHistoriesService: ChatUserHistoriesService,
+  ) {}
 
   @Post()
   create(@Body() createChatUserHistoryDto: CreateChatUserHistoryDto) {
@@ -23,7 +33,10 @@ export class ChatUserHistoriesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateChatUserHistoryDto: UpdateChatUserHistoryDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateChatUserHistoryDto: UpdateChatUserHistoryDto,
+  ) {
     return this.chatUserHistoriesService.update(+id, updateChatUserHistoryDto);
   }
 
