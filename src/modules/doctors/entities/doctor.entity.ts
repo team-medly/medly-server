@@ -1,90 +1,95 @@
-import { 
-	Column, 
-	CreateDateColumn, 
-	DeleteDateColumn, 
-	Entity, 
-	OneToMany, 
-	OneToOne, 
-	PrimaryGeneratedColumn, 
-	UpdateDateColumn
-} from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-import { ChatUserHistoriesEntity } from "src/modules/chatUserHistories/entities/chatUserHistories.entity";
-import { DoctorWithdrawalLogsEntity } from "src/modules/doctorWithdrawalLogs/entities/doctorWithdrawalLogs.entity";
+import { ChatUserHistoriesEntity } from 'src/modules/chatUserHistories/entities/chatUserHistories.entity';
+import { DoctorWithdrawalLogsEntity } from 'src/modules/doctorWithdrawalLogs/entities/doctorWithdrawalLogs.entity';
 
 @Entity('doctors')
 export class DoctorsEntity {
-	@PrimaryGeneratedColumn({
+  @PrimaryGeneratedColumn({
     type: 'int',
     comment: '의사 인덱스',
   })
   idx: number;
 
-	@Column({
-		type: 'varchar',
-		comment: '의사 직급 또는 직책'
-	})
-	role: string;
-	
-	@Column({
-		type: 'varchar',
-		comment: '의사 이메일'
-	})
-	email: string;
-	
-	@Column({
-			type: 'varchar',
-			comment: '의사 성명',
-	})
-	name: string;
-	
-	@Column({
-		type: 'varchar',
-		comment: '의사 계정 암호',
-	})
-	password: string;
+  @Column({
+    type: 'varchar',
+    comment: '의사 직급 또는 직책',
+  })
+  role: string;
 
-	
-	@Column({
-		type: 'varchar',
-		comment: '의사 휴대전화 번호'
-	})
-	phone: string;
-	
-	@CreateDateColumn({
-		name: 'dateOfBirth',
-		comment: '의사 생년월일',
-	})
-	dateOfBirth: Date;
-	
-	@Column({
-		type: 'varchar',
-		comment: '의사 성별',
-	})
-	gender: 'male' | 'female';
+  @Column({
+    type: 'varchar',
+    comment: '의사 이메일',
+  })
+  email: string;
 
-	@CreateDateColumn({
-		name: 'createdAt',
-		comment: '생성일',
-	})
-	createdAt: Date;
+  @Column({
+    type: 'varchar',
+    comment: '의사 성명',
+  })
+  name: string;
 
-	@UpdateDateColumn({
-		name: 'updatedAt',
-		comment: '수정일',
-	})
-	updatedAt: Date;
+  @Column({
+    type: 'varchar',
+    comment: '의사 계정 암호',
+  })
+  password: string;
 
-	@DeleteDateColumn({
-		name: 'deletedAt',
-		nullable: true,
-		comment: '삭제일',
-	})
-	deletedAt: Date;
+  @Column({
+    type: 'varchar',
+    comment: '의사 휴대전화 번호',
+  })
+  phone: string;
 
-	@OneToMany(() => ChatUserHistoriesEntity, (chatUserHistory) => chatUserHistory.doctor)
-	chatUserHistories: ChatUserHistoriesEntity[];
+  @CreateDateColumn({
+    name: 'dateOfBirth',
+    comment: '의사 생년월일',
+  })
+  dateOfBirth: Date;
 
-	@OneToOne(() => DoctorWithdrawalLogsEntity, (doctorWithdrawalLog) => doctorWithdrawalLog.doctor)
-	doctorWithdrawalLog: DoctorWithdrawalLogsEntity;
+  @Column({
+    type: 'varchar',
+    comment: '의사 성별',
+  })
+  gender: 'male' | 'female';
+
+  @CreateDateColumn({
+    name: 'createdAt',
+    comment: '생성일',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updatedAt',
+    comment: '수정일',
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({
+    name: 'deletedAt',
+    nullable: true,
+    comment: '삭제일',
+  })
+  deletedAt: Date;
+
+  @OneToMany(
+    () => ChatUserHistoriesEntity,
+    (chatUserHistory) => chatUserHistory.doctor,
+  )
+  chatUserHistories: ChatUserHistoriesEntity[];
+
+  @OneToOne(
+    () => DoctorWithdrawalLogsEntity,
+    (doctorWithdrawalLog) => doctorWithdrawalLog.doctor,
+  )
+  doctorWithdrawalLog: DoctorWithdrawalLogsEntity;
 }

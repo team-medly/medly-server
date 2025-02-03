@@ -1,17 +1,17 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    JoinColumn,
-    OneToOne,
-    PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { DoctorsEntity } from 'src/modules/doctors/entities/doctor.entity';
 
 @Entity('doctorWithdrawalLogs')
 export class DoctorWithdrawalLogsEntity {
- @PrimaryGeneratedColumn({
+  @PrimaryGeneratedColumn({
     type: 'int',
     comment: '인덱스',
   })
