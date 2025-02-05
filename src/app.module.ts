@@ -18,6 +18,7 @@ import { ChatUserHistoriesModule } from './modules/chatUserHistories/chatUserHis
 import { ChatUserHistoriesEntity } from './modules/chatUserHistories/entities/chatUserHistories.entity';
 import { ChatBotHistoriesModule } from './modules/chatBotHistories/chatBotHistories.module';
 import { ChatBotHistoriesEntity } from './modules/chatBotHistories/entities/chatBotHistories.entity';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { ChatBotHistoriesEntity } from './modules/chatBotHistories/entities/chat
     DoctorWithdrawalLogsModule,
     ChatUserHistoriesModule,
     ChatBotHistoriesModule,
+    AuthModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -8,9 +8,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
-import { ChatUserHistoriesEntity } from 'src/modules/chatUserHistories/entities/chatUserHistories.entity';
-import { DoctorWithdrawalLogsEntity } from 'src/modules/doctorWithdrawalLogs/entities/doctorWithdrawalLogs.entity';
+import { ChatUserHistoriesEntity } from '../../chatUserHistories/entities/chatUserHistories.entity';
+import { DoctorWithdrawalLogsEntity } from '../../doctorWithdrawalLogs/entities/doctorWithdrawalLogs.entity';
 
 @Entity('doctors')
 export class DoctorsEntity {
@@ -42,6 +43,7 @@ export class DoctorsEntity {
     type: 'varchar',
     comment: '의사 계정 암호',
   })
+  @Exclude()
   password: string;
 
   @Column({
