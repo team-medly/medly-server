@@ -11,7 +11,9 @@ describe('ChatUserHistoriesController', () => {
       providers: [ChatUserHistoriesService],
     }).compile();
 
-    controller = module.get<ChatUserHistoriesController>(ChatUserHistoriesController);
+    controller = module.get<ChatUserHistoriesController>(
+      ChatUserHistoriesController,
+    );
   });
 
   it('should be defined', () => {

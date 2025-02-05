@@ -11,7 +11,9 @@ describe('ChatBotHistoriesController', () => {
       providers: [ChatBotHistoriesService],
     }).compile();
 
-    controller = module.get<ChatBotHistoriesController>(ChatBotHistoriesController);
+    controller = module.get<ChatBotHistoriesController>(
+      ChatBotHistoriesController,
+    );
   });
 
   it('should be defined', () => {

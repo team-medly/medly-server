@@ -1,35 +1,50 @@
 import {
-	Column, 
-	CreateDateColumn, 
-	Entity, 
-	JoinColumn, 
-	OneToOne, 
-	PrimaryGeneratedColumn
-} from "typeorm";
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import { ChatUserHistoriesEntity } from "src/modules/chatUserHistories/entities/chatUserHistories.entity";
+import { ChatUserHistoriesEntity } from 'src/modules/chatUserHistories/entities/chatUserHistories.entity';
 
 @Entity('chatBotHistories')
 export class ChatBotHistoriesEntity {
-	@PrimaryGeneratedColumn({
-		type: 'int',
-		comment: '사용자 쿼리에 대한 챗봇 답변 인덱스'
-	})
- 	idx: number;
+  @PrimaryGeneratedColumn({
+    type: 'int',
+    comment: '사용자 쿼리에 대한 챗봇 답변 인덱스',
+  })
+  idx: number;
 
-	@OneToOne(() => ChatUserHistoriesEntity, (chatUserHistory) => chatUserHistory.chatBotHistory)
-	@JoinColumn()
-	query: ChatUserHistoriesEntity;
+  @OneToOne(
+    () => ChatUserHistoriesEntity,
+    (chatUserHistory) => chatUserHistory.chatBotHistory,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
+  )
+  @JoinColumn()
+  query: ChatUserHistoriesEntity;
 
-	@Column({
-		type: 'varchar',
-		comment: ' 챗봇 답변 문자열'
-	})
-	answer: string;
+  @Column({
+    type: 'varchar',
+    comment: ' 챗봇 답변 문자열',
+  })
+  answer: string;
 
-	@CreateDateColumn({
-		name: 'createdAt',
-		comment: '답변 생성일'
-	})
-	createdAt: Date;
+  @CreateDateColumn({
+    name: 'createdAt',
+    comment: '답변 생성일',
+  })
+  createdAt: Date;
+
+  @DeleteDateColumn({
+    name: 'deletedAt',
+    comment: '답변 삭제일',
+  })
+  deletedAt: Date;
 }

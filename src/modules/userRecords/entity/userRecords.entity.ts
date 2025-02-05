@@ -33,9 +33,23 @@ export class UserRecordsEntity {
   @Column({
     type: 'varchar',
     comment: '수술 동의서 문서 등 서버 내 파일 저장 경로',
-    nullable: true
+    nullable: true,
   })
   filePath: string;
+
+  @Column({
+    type: 'boolean',
+    comment: '0:설명 필요, 1:설명 완료',
+    nullable: true,
+  })
+  status: boolean;
+
+  @Column({
+    type: 'datetime',
+    comment: '수술 예정 시일',
+    nullable: true,
+  })
+  scheduledAt: Date;
 
   @CreateDateColumn({
     name: 'createdAt',

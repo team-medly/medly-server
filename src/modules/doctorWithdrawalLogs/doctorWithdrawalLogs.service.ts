@@ -16,7 +16,10 @@ export class DoctorWithdrawalLogsService {
     return `This action returns a #${id} doctorWithdrawalLog`;
   }
 
-  update(id: number, updateDoctorWithdrawalLogDto: UpdateDoctorWithdrawalLogDto) {
+  update(
+    id: number,
+    updateDoctorWithdrawalLogDto: UpdateDoctorWithdrawalLogDto,
+  ) {
     return `This action updates a #${id} doctorWithdrawalLog`;
   }
 

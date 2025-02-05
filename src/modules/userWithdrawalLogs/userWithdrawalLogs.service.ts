@@ -25,8 +25,9 @@ export class UserWithdrawalLogsService {
       const newUserWithdrawalLogs = new UserWithdrawalLogsEntity();
       newUserWithdrawalLogs.reason = reason;
       newUserWithdrawalLogs.user = { idx: userIdx } as any;
-      const savedUserWithdrawalLogs =
-        await queryRunner.manager.save(newUserWithdrawalLogs);
+      const savedUserWithdrawalLogs = await queryRunner.manager.save(
+        newUserWithdrawalLogs,
+      );
       await queryRunner.commitTransaction();
       return savedUserWithdrawalLogs;
     } catch (error) {

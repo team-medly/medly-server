@@ -46,27 +46,27 @@ export class UsersEntity {
 
   @Column({
     type: 'varchar',
-    comment: '환자 이메일'
+    comment: '환자 이메일',
   })
   email: string;
 
   @Column({
     type: 'varchar',
-    comment: '환자 휴대전화 번호'
+    comment: '환자 휴대전화 번호',
   })
   phone: string;
 
   @Column({
     type: 'varchar',
     comment: '환자 특이사항란',
-    nullable: true
+    nullable: true,
   })
   significant: string;
 
   @Column({
     type: 'varchar',
     comment: '환자 특이사항 외 비고',
-    nullable: true
+    nullable: true,
   })
   note: string;
 
@@ -92,6 +92,9 @@ export class UsersEntity {
   @OneToMany(() => UserRecordsEntity, (userRecords) => userRecords.user)
   userRecords: UserRecordsEntity[];
 
-  @OneToOne(() => UserWithdrawalLogsEntity, (userWithdrawalLog) => userWithdrawalLog.user)
+  @OneToOne(
+    () => UserWithdrawalLogsEntity,
+    (userWithdrawalLog) => userWithdrawalLog.user,
+  )
   userWithdrawalLog: UserWithdrawalLogsEntity;
 }
