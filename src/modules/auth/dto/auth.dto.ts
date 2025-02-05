@@ -3,6 +3,8 @@ import {
   IsEmail,
   IsString,
   MinLength,
+  MaxLength,
+  Matches,
   IsEnum,
   IsPhoneNumber,
   IsDateString,
@@ -14,9 +16,20 @@ export class RegisterDto {
   @IsEmail()
   email: string;
 
-  @ApiProperty({ example: 'password123' })
+  @ApiProperty({
+    example: 'Password123!',
+    description: '최소 8자, 최대 20자, 영문 대/소문자, 숫자, 특수문자 포함',
+  })
   @IsString()
-  @MinLength(6)
+  @MinLength(8)
+  @MaxLength(20)
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
+    {
+      message:
+        '비밀번호는 최소 8자 이상, 20자 이하, 영문 대/소문자, 숫자, 특수문자를 포함해야 합니다.',
+    },
+  )
   password: string;
 
   @ApiProperty({ example: '김의사' })
@@ -45,9 +58,9 @@ export class LoginDto {
   @IsPhoneNumber('KR')
   phone: string;
 
-  @ApiProperty({ example: 'password123' })
+  @ApiProperty({ example: 'Password123!' })
   @IsString()
-  @MinLength(6)
+  @MinLength(8)
   password: string;
 }
 
