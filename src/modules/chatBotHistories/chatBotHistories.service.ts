@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { InsertOneChatBotHistoryDto } from './dto/insertOneChatBotHistories.dto';
-import { UpdateChatBotHistoryDto } from './dto/updateChatBotHistories.dto';
+import { CreateOneChatBotHistoriesDto } from './dto/CreateOneChatBotHistories.dto';
+import { UpdateChatBotHistoriesDto } from './dto/UpdateChatBotHistories.dto';
 import { ChatBotHistoriesEntity } from './entities/chatBotHistories.entity';
 import { ChatUserHistoriesEntity } from '../chatUserHistories/entities/chatUserHistories.entity';
 import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DoctorsEntity } from '../doctors/entities/doctor.entity';
 import { handlingError } from 'src/common/utils/handlingError';
+import { FindOneByQueryIdxChatBotHistoriesDto } from './dto/FindOneByQueryIdxChatBotHistories.dto';
+import { FindAllByDoctorIdxChatBotHistoriesDto } from './dto/FindAllByDoctorIdxChatBotHistories.dto';
+import { DeleteOneByIdxChatBotHistoriesDto } from './dto/DeleteOneByIdxChatBotHistories.dto';
 
 @Injectable()
 export class ChatBotHistoriesService {
@@ -16,45 +19,42 @@ export class ChatBotHistoriesService {
     private chatBotHistoriesRepository: Repository<ChatBotHistoriesEntity>,
   ) {}
 
-  async insertOne(insertOneChatBotHistoryDto: InsertOneChatBotHistoryDto) {
-    const chat = new ChatBotHistoriesEntity();
-    chat.answer = insertOneChatBotHistoryDto.answer;
-    chat.query = new ChatUserHistoriesEntity();
-    chat.query.idx = insertOneChatBotHistoryDto.queryIdx;
-    const saveResponse = this.chatBotHistoriesRepository.save(chat);
-    return { message: 'OK' };
+  async createOne(createOneChatBotHistoriesDto: CreateOneChatBotHistoriesDto) {
+    const chatBot = new ChatBotHistoriesEntity();
+    chatBot.answer = createOneChatBotHistoriesDto.answer;
+    chatBot.chatUserHistory = new ChatUserHistoriesEntity();
+    chatBot.chatUserHistory.idx = createOneChatBotHistoriesDto.queryIdx;
+    return this.chatBotHistoriesRepository.save(chatBot);
   }
 
-  async selectOne(queryIdx: number): Promise<ChatBotHistoriesEntity> {
-    const query = new ChatUserHistoriesEntity();
-    query.idx = queryIdx;
-    return await this.chatBotHistoriesRepository.findOne({
+  async findOneByQueryIdx(findOneByQueryIdxChatBotHistoriesDto: FindOneByQueryIdxChatBotHistoriesDto): Promise<ChatBotHistoriesEntity> {
+    const chatUser = new ChatUserHistoriesEntity();
+    chatUser.idx = findOneByQueryIdxChatBotHistoriesDto.queryIdx;
+    return this.chatBotHistoriesRepository.findOne({
       where: {
-        query: query,
+        chatUserHistory: chatUser,
       },
     });
   }
 
-  async selectAll(doctorIdx: number): Promise<ChatBotHistoriesEntity[]> {
-    const query = new ChatUserHistoriesEntity();
-    query.doctor = new DoctorsEntity();
-    query.doctor.idx = doctorIdx;
-    return await this.chatBotHistoriesRepository.find({
+  async findAllByDoctorIdx(findAllByDoctorIdxChatBotHistoriesDto: FindAllByDoctorIdxChatBotHistoriesDto): Promise<ChatBotHistoriesEntity[]> {
+    const chatUser = new ChatUserHistoriesEntity();
+    chatUser.doctor = new DoctorsEntity();
+    chatUser.doctor.idx = findAllByDoctorIdxChatBotHistoriesDto.doctorIdx;
+    return this.chatBotHistoriesRepository.find({
       where: {
-        query: query,
+        chatUserHistory: chatUser,
       },
     });
   }
 
-  async deleteOne(queryIdx: number) {
-    const answer = await this.chatBotHistoriesRepository.findOne({
+  async deleteOneByIdx(deleteOneByIdxChatBotHistoriesDto: DeleteOneByIdxChatBotHistoriesDto) {
+    const chatBot = await this.chatBotHistoriesRepository.findOne({
       where: {
-        idx: queryIdx,
+        idx: deleteOneByIdxChatBotHistoriesDto.idx,
       },
     });
-    const softRemoveResponse =
-      this.chatBotHistoriesRepository.softRemove(answer);
-    return { message: 'OK' };
+    return this.chatBotHistoriesRepository.softRemove(chatBot);
   }
 
   // findOne(id: number) {

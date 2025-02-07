@@ -8,5 +8,6 @@ import { ChatBotHistoriesEntity } from './entities/chatBotHistories.entity';
   imports: [TypeOrmModule.forFeature([ChatBotHistoriesEntity])],
   controllers: [ChatBotHistoriesController],
   providers: [ChatBotHistoriesService],
+  exports: [ChatBotHistoriesService],
 })
 export class ChatBotHistoriesModule {}

@@ -19,6 +19,7 @@ import { ChatUserHistoriesEntity } from './modules/chatUserHistories/entities/ch
 import { ChatBotHistoriesModule } from './modules/chatBotHistories/chatBotHistories.module';
 import { ChatBotHistoriesEntity } from './modules/chatBotHistories/entities/chatBotHistories.entity';
 import { AuthModule } from './modules/auth/auth.module';
+import { ChatsModule } from './modules/chats/chats.module';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { AuthModule } from './modules/auth/auth.module';
     ChatUserHistoriesModule,
     ChatBotHistoriesModule,
     AuthModule,
+    ChatsModule,
   ],
 })
 export class AppModule implements NestModule {

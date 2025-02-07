@@ -24,6 +24,7 @@
     "seed:reset": "yarn db:drop && yarn db:create && yarn seed:run"
   },
   "dependencies": {
+    "@azure/identity": "^4.6.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.1",
     "@nestjs/core": "^10.0.0",
@@ -47,6 +48,7 @@
     "joi": "^17.12.2",
     "moment-timezone": "^0.5.45",
     "mysql2": "^3.9.3",
+    "openai": "^4.83.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "path": "^0.12.7",

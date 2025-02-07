@@ -11,8 +11,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ChatUserHistoriesService } from './chatUserHistories.service';
-import { InsertOneChatUserHistoryDto } from './dto/insertOneChatUserHistories.dto';
-import { UpdateChatUserHistoryDto } from './dto/updateChatUserHistories.dto';
+import { CreateOneChatUserHistoriesDto } from './dto/CreateOneChatUserHistories.dto';
+import { UpdateOneChatUserHistoriesDto } from './dto/UpdateOneChatUserHistories.dto';
 import {
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
@@ -23,6 +23,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ChatUserHistoriesEntity } from './entities/chatUserHistories.entity';
+import { FindAllByDoctorIdxChatUserHistoriesDto } from './dto/FindAllByDoctorIdxChatUserHistories.dto';
+import { DeleteOneChatUserHistoriesDto } from './dto/DeleteOneChatUserHistories.dto';
 
 @ApiTags('챗봇 API')
 @Controller('chats/user')
@@ -39,10 +41,10 @@ export class ChatUserHistoriesController {
   @ApiOkResponse({ description: '저장 성공' })
   @ApiNotFoundResponse({ description: '저장 실패' })
   @ApiInternalServerErrorResponse({ description: '저장 실패' })
-  async insertOne(
-    @Body() insertOneChatUserHistoryDto: InsertOneChatUserHistoryDto,
+  async createOne(
+    @Body() createOneChatUserHistoriesDto: CreateOneChatUserHistoriesDto,
   ) {
-    return this.chatUserHistoriesService.insertOne(insertOneChatUserHistoryDto);
+    return this.chatUserHistoriesService.createOne(createOneChatUserHistoriesDto);
   }
 
   @Get()
@@ -53,18 +55,13 @@ export class ChatUserHistoriesController {
   @ApiOkResponse({ description: '불러오기 성공' })
   @ApiNotFoundResponse({ description: '불러오기 실패' })
   @ApiInternalServerErrorResponse({ description: '불러오기 실패' })
-  @ApiQuery({
-    name: 'doctorIdx',
-    required: true,
-    description: '사용자(의사) 인덱스',
-  })
-  async selectAll(
-    @Query('doctorIdx') doctorIdx,
+  async findAllByDoctorIdx(
+    @Query() findAllByDoctorIdxChatUserHistoriesDto: FindAllByDoctorIdxChatUserHistoriesDto,
   ): Promise<ChatUserHistoriesEntity[]> {
-    if (!doctorIdx) {
+    if (!findAllByDoctorIdxChatUserHistoriesDto) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
-    return await this.chatUserHistoriesService.selectAll(+doctorIdx);
+    return this.chatUserHistoriesService.findAllByDoctorIdx(findAllByDoctorIdxChatUserHistoriesDto);
   }
 
   @Delete(':idx')
@@ -76,22 +73,7 @@ export class ChatUserHistoriesController {
   @ApiOkResponse({ description: '삭제 성공' })
   @ApiNotFoundResponse({ description: '삭제 실패' })
   @ApiInternalServerErrorResponse({ description: '삭제 실패' })
-  @ApiParam({
-    name: 'idx',
-    required: true,
-    description: '사용자 챗봇 쿼리 인덱스',
-  })
-  async deleteOne(@Param('idx') idx) {
-    return this.chatUserHistoriesService.deleteOne(+idx);
+  async deleteOneByIdx(@Param() deleteOneChatUserHistoriesDto: DeleteOneChatUserHistoriesDto) {
+    return this.chatUserHistoriesService.deleteOneByIdx(deleteOneChatUserHistoriesDto);
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.chatUserHistoriesService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateChatUserHistoryDto: UpdateChatUserHistoryDto) {
-  //   return this.chatUserHistoriesService.update(+id, updateChatUserHistoryDto);
-  // }
 }

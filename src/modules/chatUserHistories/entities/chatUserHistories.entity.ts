@@ -20,7 +20,7 @@ export class ChatUserHistoriesEntity {
   idx: number;
 
   @Column({
-    type: 'varchar',
+    type: 'text',
     comment: '사용자 쿼리 문자열',
   })
   query: string;
@@ -42,11 +42,9 @@ export class ChatUserHistoriesEntity {
 
   @OneToOne(
     () => ChatBotHistoriesEntity,
-    (chatBotHistory) => chatBotHistory.query,
+    (chatBotHistory) => chatBotHistory.chatUserHistory,
     {
       cascade: true,
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
     },
   )
   chatBotHistory: ChatBotHistoriesEntity;

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class SelectAllChatUserHistoryDto {
+export class FindAllByDoctorIdxChatBotHistoriesDto {
   @ApiProperty({
     description: '의사 인덱스',
     example: 1,

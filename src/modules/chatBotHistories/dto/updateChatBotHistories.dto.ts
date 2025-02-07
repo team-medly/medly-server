@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
-import { InsertOneChatBotHistoryDto } from './insertOneChatBotHistories.dto';
+import { CreateOneChatBotHistoriesDto } from './CreateOneChatBotHistories.dto';
 
-export class UpdateChatBotHistoryDto extends PartialType(
-  InsertOneChatBotHistoryDto,
+export class UpdateChatBotHistoriesDto extends PartialType(
+  CreateOneChatBotHistoriesDto,
 ) {}

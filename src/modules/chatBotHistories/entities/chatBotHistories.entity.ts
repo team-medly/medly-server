@@ -26,11 +26,11 @@ export class ChatBotHistoriesEntity {
       onUpdate: 'CASCADE',
     },
   )
-  @JoinColumn()
-  query: ChatUserHistoriesEntity;
+  @JoinColumn({ name: 'queryIdx' })
+  chatUserHistory: ChatUserHistoriesEntity;
 
   @Column({
-    type: 'varchar',
+    type: 'text',
     comment: ' 챗봇 답변 문자열',
   })
   answer: string;
