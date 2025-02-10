@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
@@ -20,12 +21,16 @@ export class ChatBotHistoriesEntity {
   @OneToOne(
     () => ChatUserHistoriesEntity,
     (chatUserHistory) => chatUserHistory.chatBotHistory,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   )
-  @JoinColumn()
-  query: ChatUserHistoriesEntity;
+  @JoinColumn({ name: 'queryIdx' })
+  chatUserHistory: ChatUserHistoriesEntity;
 
   @Column({
-    type: 'varchar',
+    type: 'text',
     comment: ' 챗봇 답변 문자열',
   })
   answer: string;
@@ -35,4 +40,10 @@ export class ChatBotHistoriesEntity {
     comment: '답변 생성일',
   })
   createdAt: Date;
+
+  @DeleteDateColumn({
+    name: 'deletedAt',
+    comment: '답변 삭제일',
+  })
+  deletedAt: Date;
 }

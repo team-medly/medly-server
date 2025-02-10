@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToOne,
@@ -19,7 +20,7 @@ export class ChatUserHistoriesEntity {
   idx: number;
 
   @Column({
-    type: 'varchar',
+    type: 'text',
     comment: '사용자 쿼리 문자열',
   })
   query: string;
@@ -30,12 +31,21 @@ export class ChatUserHistoriesEntity {
   })
   createdAt: Date;
 
+  @DeleteDateColumn({
+    name: 'deletedAt',
+    comment: '쿼리 삭제일',
+  })
+  deletedAt: Date;
+
   @ManyToOne(() => DoctorsEntity, (doctor) => doctor.chatUserHistories)
   doctor: DoctorsEntity;
 
   @OneToOne(
     () => ChatBotHistoriesEntity,
-    (chatBotHistory) => chatBotHistory.query,
+    (chatBotHistory) => chatBotHistory.chatUserHistory,
+    {
+      cascade: true,
+    },
   )
   chatBotHistory: ChatBotHistoriesEntity;
 }
