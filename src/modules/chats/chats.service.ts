@@ -1,39 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
-import { ChatUserHistoriesEntity } from '../chatUserHistories/entities/chatUserHistories.entity';
-import { ChatBotHistoriesEntity } from '../chatBotHistories/entities/chatBotHistories.entity';
 import { AzureOpenAI } from 'openai';
-import type { ChatCompletionCreateParamsNonStreaming } from 'openai/resources/index';
+import '@azure/openai/types';
 import { handlingError } from 'src/common/utils/handlingError';
 import { ChatUserHistoriesService } from '../chatUserHistories/chatUserHistories.service';
 import { ChatBotHistoriesService } from '../chatBotHistories/chatBotHistories.service';
-import { RequestAzureOpenAiGptDto } from './dto/RequestAzureOpenAiGpt.dto';
+import {
+  RequestAzureOpenAiGptDto,
+  RequestAzureOpenAiGptParamDto,
+} from './dto/RequestAzureOpenAiGpt.dto';
+import {
+  FindAllChatsParamDto,
+  FindAllChatsQueryDto,
+} from './dto/FindAllChats.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ChatUserHistoriesEntity } from '../chatUserHistories/entities/chatUserHistories.entity';
+import { Repository } from 'typeorm';
+import { DoctorsEntity } from '../doctors/entities/doctor.entity';
 
 @Injectable()
 export class ChatsService {
   constructor(
-    private dataSource: DataSource,
+    @InjectRepository(ChatUserHistoriesEntity)
+    private chatUserHistoriesRepository: Repository<ChatUserHistoriesEntity>,
     private chatUserHistoriesService: ChatUserHistoriesService,
     private chatBotHistoriesService: ChatBotHistoriesService,
   ) {}
 
-  createMessage(): ChatCompletionCreateParamsNonStreaming {
-    return {
-      messages: [
-        { role: 'system', content: '' },
-        { role: 'user', content: '' },
-      ],
-      model: '', // model == deployment name
-    };
-  }
+  // createMessage(): ChatCompletionCreateParamsNonStreaming {
+  //   return {
+  //     messages: [
+  //       { role: 'system', content: '' },
+  //       { role: 'user', content: '' },
+  //     ],
+  //     model: '', // model == deployment name
+  //   };
+  // }
 
-  async requestAzureOpenAiGpt(requestAzureOpenAiGptDto: RequestAzureOpenAiGptDto) {
+  async requestAzureOpenAiGpt(
+    requestAzureOpenAiGptParamDto: RequestAzureOpenAiGptParamDto,
+    requestAzureOpenAiGptDto: RequestAzureOpenAiGptDto,
+  ) {
     const endpoint = process.env['AZURE_OPENAI_ENDPOINT'];
     const apiKey = process.env['AZURE_OPENAI_API_KEY'];
 
     const apiVersion = '2024-12-01-preview';
-    const deploymentName = 'o3-mini-2025-01-31';
+    const deploymentName = 'gpt-4o-doc-search';
 
     const messages = requestAzureOpenAiGptDto.messages;
 
@@ -46,6 +57,7 @@ export class ChatsService {
       });
 
       const response = await client.chat.completions.create({
+        // stream: true,
         messages: [
           {
             role: 'system',
@@ -58,13 +70,27 @@ export class ChatsService {
 
       const query = await this.chatUserHistoriesService.createOne({
         query: messages,
-        doctorIdx: 1,
+        doctorIdx: requestAzureOpenAiGptParamDto.doctorIdx,
       });
 
-      const answer = this.chatBotHistoriesService.createOne({
+      this.chatBotHistoriesService.createOne({
         answer: response.choices[0].message.content,
         queryIdx: query.idx,
       });
+
+      // response 프로퍼티 중 stream: true로 설정했을 때 사용
+      // let result = '';
+      // for await (const event of response) {
+      //   console.log(event.choices);
+      //   for (const choice of event.choices) {
+      //     const newText = choice.delta?.content;
+      //     if (newText) {
+      //       result += newText;
+      //       // To see streaming results as they arrive, uncomment line below
+      //       // console.log(newText);
+      //     }
+      //   }
+      // }
 
       return (({ choices, model, usage }) => ({ choices, model, usage }))(
         response,
@@ -73,5 +99,29 @@ export class ChatsService {
       console.log(err);
       handlingError(err);
     }
+  }
+
+  async findAll(
+    findAllChatsParamDto: FindAllChatsParamDto,
+    findAllChatsQueryDto: FindAllChatsQueryDto,
+  ) {
+    const doctor = new DoctorsEntity();
+    doctor.idx = findAllChatsParamDto.doctorIdx;
+    const histories = this.chatUserHistoriesRepository.find({
+      where: {
+        model: findAllChatsQueryDto.model,
+        doctor: doctor,
+      },
+      order: {
+        createdAt: 'ASC',
+      },
+      relations: {
+        chatBotHistory: true,
+      },
+    });
+    return (await histories).map((history) => ({
+      query: history.query,
+      answer: history.chatBotHistory?.answer || null,
+    }));
   }
 }

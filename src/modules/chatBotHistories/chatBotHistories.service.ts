@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOneChatBotHistoriesDto } from './dto/CreateOneChatBotHistories.dto';
-import { UpdateChatBotHistoriesDto } from './dto/UpdateChatBotHistories.dto';
 import { ChatBotHistoriesEntity } from './entities/chatBotHistories.entity';
 import { ChatUserHistoriesEntity } from '../chatUserHistories/entities/chatUserHistories.entity';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DoctorsEntity } from '../doctors/entities/doctor.entity';
-import { handlingError } from 'src/common/utils/handlingError';
 import { FindOneByQueryIdxChatBotHistoriesDto } from './dto/FindOneByQueryIdxChatBotHistories.dto';
 import { FindAllByDoctorIdxChatBotHistoriesDto } from './dto/FindAllByDoctorIdxChatBotHistories.dto';
 import { DeleteOneByIdxChatBotHistoriesDto } from './dto/DeleteOneByIdxChatBotHistories.dto';
@@ -14,7 +12,6 @@ import { DeleteOneByIdxChatBotHistoriesDto } from './dto/DeleteOneByIdxChatBotHi
 @Injectable()
 export class ChatBotHistoriesService {
   constructor(
-    private dataSource: DataSource,
     @InjectRepository(ChatBotHistoriesEntity)
     private chatBotHistoriesRepository: Repository<ChatBotHistoriesEntity>,
   ) {}
@@ -27,7 +24,9 @@ export class ChatBotHistoriesService {
     return this.chatBotHistoriesRepository.save(chatBot);
   }
 
-  async findOneByQueryIdx(findOneByQueryIdxChatBotHistoriesDto: FindOneByQueryIdxChatBotHistoriesDto): Promise<ChatBotHistoriesEntity> {
+  async findOneByQueryIdx(
+    findOneByQueryIdxChatBotHistoriesDto: FindOneByQueryIdxChatBotHistoriesDto,
+  ): Promise<ChatBotHistoriesEntity> {
     const chatUser = new ChatUserHistoriesEntity();
     chatUser.idx = findOneByQueryIdxChatBotHistoriesDto.queryIdx;
     return this.chatBotHistoriesRepository.findOne({
@@ -37,7 +36,9 @@ export class ChatBotHistoriesService {
     });
   }
 
-  async findAllByDoctorIdx(findAllByDoctorIdxChatBotHistoriesDto: FindAllByDoctorIdxChatBotHistoriesDto): Promise<ChatBotHistoriesEntity[]> {
+  async findAllByDoctorIdx(
+    findAllByDoctorIdxChatBotHistoriesDto: FindAllByDoctorIdxChatBotHistoriesDto,
+  ): Promise<ChatBotHistoriesEntity[]> {
     const chatUser = new ChatUserHistoriesEntity();
     chatUser.doctor = new DoctorsEntity();
     chatUser.doctor.idx = findAllByDoctorIdxChatBotHistoriesDto.doctorIdx;
@@ -48,7 +49,9 @@ export class ChatBotHistoriesService {
     });
   }
 
-  async deleteOneByIdx(deleteOneByIdxChatBotHistoriesDto: DeleteOneByIdxChatBotHistoriesDto) {
+  async deleteOneByIdx(
+    deleteOneByIdxChatBotHistoriesDto: DeleteOneByIdxChatBotHistoriesDto,
+  ) {
     const chatBot = await this.chatBotHistoriesRepository.findOne({
       where: {
         idx: deleteOneByIdxChatBotHistoriesDto.idx,

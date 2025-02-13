@@ -25,6 +25,13 @@ export class ChatUserHistoriesEntity {
   })
   query: string;
 
+  @Column({
+    type: 'varchar',
+    comment: '챗봇 모델명',
+    nullable: true,
+  })
+  model: string;
+
   @CreateDateColumn({
     name: 'createdAt',
     comment: '쿼리 생성일',
