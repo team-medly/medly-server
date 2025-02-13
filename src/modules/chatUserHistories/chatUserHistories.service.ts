@@ -18,15 +18,19 @@ export class ChatUserHistoriesService {
     private chatUserHistoriesRepository: Repository<ChatUserHistoriesEntity>,
   ) {}
 
-  async createOne(createOneChatUserHistoriesDto: CreateOneChatUserHistoriesDto) {
+  async createOne(
+    createOneChatUserHistoriesDto: CreateOneChatUserHistoriesDto,
+  ) {
     const chatUser = new ChatUserHistoriesEntity();
     chatUser.query = createOneChatUserHistoriesDto.query;
     chatUser.doctor = new DoctorsEntity();
     chatUser.doctor.idx = createOneChatUserHistoriesDto.doctorIdx;
     return this.chatUserHistoriesRepository.save(chatUser);
   }
-  
-  async findAllByDoctorIdx(findAllByDoctorIdxChatUserHistoriesDto: FindAllByDoctorIdxChatUserHistoriesDto): Promise<ChatUserHistoriesEntity[]> {
+
+  async findAllByDoctorIdx(
+    findAllByDoctorIdxChatUserHistoriesDto: FindAllByDoctorIdxChatUserHistoriesDto,
+  ): Promise<ChatUserHistoriesEntity[]> {
     const doctor = new DoctorsEntity();
     doctor.idx = findAllByDoctorIdxChatUserHistoriesDto.doctorIdx;
     return this.chatUserHistoriesRepository.find({
@@ -36,7 +40,9 @@ export class ChatUserHistoriesService {
     });
   }
 
-  async deleteOneByIdx(deleteOneChatUserHistoriesDto: DeleteOneChatUserHistoriesDto) {
+  async deleteOneByIdx(
+    deleteOneChatUserHistoriesDto: DeleteOneChatUserHistoriesDto,
+  ) {
     const chatUser = await this.chatUserHistoriesRepository.findOne({
       where: {
         idx: deleteOneChatUserHistoriesDto.idx,

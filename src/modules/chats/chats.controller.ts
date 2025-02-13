@@ -25,6 +25,8 @@ export class ChatsController {
   async requestAzureOpenAiGpt(
     @Body() requestAzureOpenAiGptDto: RequestAzureOpenAiGptDto,
   ) {
-    return await this.chatService.requestAzureOpenAiGpt(requestAzureOpenAiGptDto);
+    return await this.chatService.requestAzureOpenAiGpt(
+      requestAzureOpenAiGptDto,
+    );
   }
 }

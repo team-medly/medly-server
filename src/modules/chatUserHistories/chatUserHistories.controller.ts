@@ -44,7 +44,9 @@ export class ChatUserHistoriesController {
   async createOne(
     @Body() createOneChatUserHistoriesDto: CreateOneChatUserHistoriesDto,
   ) {
-    return this.chatUserHistoriesService.createOne(createOneChatUserHistoriesDto);
+    return this.chatUserHistoriesService.createOne(
+      createOneChatUserHistoriesDto,
+    );
   }
 
   @Get()
@@ -56,12 +58,15 @@ export class ChatUserHistoriesController {
   @ApiNotFoundResponse({ description: '불러오기 실패' })
   @ApiInternalServerErrorResponse({ description: '불러오기 실패' })
   async findAllByDoctorIdx(
-    @Query() findAllByDoctorIdxChatUserHistoriesDto: FindAllByDoctorIdxChatUserHistoriesDto,
+    @Query()
+    findAllByDoctorIdxChatUserHistoriesDto: FindAllByDoctorIdxChatUserHistoriesDto,
   ): Promise<ChatUserHistoriesEntity[]> {
     if (!findAllByDoctorIdxChatUserHistoriesDto) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
-    return this.chatUserHistoriesService.findAllByDoctorIdx(findAllByDoctorIdxChatUserHistoriesDto);
+    return this.chatUserHistoriesService.findAllByDoctorIdx(
+      findAllByDoctorIdxChatUserHistoriesDto,
+    );
   }
 
   @Delete(':idx')
@@ -73,7 +78,11 @@ export class ChatUserHistoriesController {
   @ApiOkResponse({ description: '삭제 성공' })
   @ApiNotFoundResponse({ description: '삭제 실패' })
   @ApiInternalServerErrorResponse({ description: '삭제 실패' })
-  async deleteOneByIdx(@Param() deleteOneChatUserHistoriesDto: DeleteOneChatUserHistoriesDto) {
-    return this.chatUserHistoriesService.deleteOneByIdx(deleteOneChatUserHistoriesDto);
+  async deleteOneByIdx(
+    @Param() deleteOneChatUserHistoriesDto: DeleteOneChatUserHistoriesDto,
+  ) {
+    return this.chatUserHistoriesService.deleteOneByIdx(
+      deleteOneChatUserHistoriesDto,
+    );
   }
 }

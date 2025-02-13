@@ -44,7 +44,7 @@ export class ChatBotHistoriesController {
   @ApiNotFoundResponse({ description: '저장 실패' })
   @ApiInternalServerErrorResponse({ description: '저장 실패' })
   async createOne(
-    @Body() createOneChatBotHistoriesDto: CreateOneChatBotHistoriesDto
+    @Body() createOneChatBotHistoriesDto: CreateOneChatBotHistoriesDto,
   ) {
     return this.chatBotHistoriesService.createOne(createOneChatBotHistoriesDto);
   }
@@ -57,11 +57,16 @@ export class ChatBotHistoriesController {
   @ApiOkResponse({ description: '불러오기 성공' })
   @ApiNotFoundResponse({ description: '불러오기 실패' })
   @ApiInternalServerErrorResponse({ description: '불러오기 실패' })
-  async findOneByQueryIdx(@Param() findOneByQueryIdxChatBotHistoriesDto: FindOneByQueryIdxChatBotHistoriesDto) {
+  async findOneByQueryIdx(
+    @Param()
+    findOneByQueryIdxChatBotHistoriesDto: FindOneByQueryIdxChatBotHistoriesDto,
+  ) {
     if (!findOneByQueryIdxChatBotHistoriesDto) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
-    return this.chatBotHistoriesService.findOneByQueryIdx(findOneByQueryIdxChatBotHistoriesDto);
+    return this.chatBotHistoriesService.findOneByQueryIdx(
+      findOneByQueryIdxChatBotHistoriesDto,
+    );
   }
 
   @Get()
@@ -72,11 +77,16 @@ export class ChatBotHistoriesController {
   @ApiOkResponse({ description: '불러오기 성공' })
   @ApiNotFoundResponse({ description: '불러오기 실패' })
   @ApiInternalServerErrorResponse({ description: '불러오기 실패' })
-  async findAllByDoctorIdx(@Query() findAllByDoctorIdxChatBotHistoriesDto: FindAllByDoctorIdxChatBotHistoriesDto ) {
+  async findAllByDoctorIdx(
+    @Query()
+    findAllByDoctorIdxChatBotHistoriesDto: FindAllByDoctorIdxChatBotHistoriesDto,
+  ) {
     if (!findAllByDoctorIdxChatBotHistoriesDto) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
-    return this.chatBotHistoriesService.findAllByDoctorIdx(findAllByDoctorIdxChatBotHistoriesDto);
+    return this.chatBotHistoriesService.findAllByDoctorIdx(
+      findAllByDoctorIdxChatBotHistoriesDto,
+    );
   }
 
   @Delete(':idx')
@@ -88,7 +98,12 @@ export class ChatBotHistoriesController {
   @ApiOkResponse({ description: '삭제 성공' })
   @ApiNotFoundResponse({ description: '삭제 실패' })
   @ApiInternalServerErrorResponse({ description: '삭제 실패' })
-  async deleteOneByIdx(@Param() deleteOneByIdxChatBotHistoriesDto: DeleteOneByIdxChatBotHistoriesDto) {
-    return this.chatBotHistoriesService.deleteOneByIdx(deleteOneByIdxChatBotHistoriesDto);
+  async deleteOneByIdx(
+    @Param()
+    deleteOneByIdxChatBotHistoriesDto: DeleteOneByIdxChatBotHistoriesDto,
+  ) {
+    return this.chatBotHistoriesService.deleteOneByIdx(
+      deleteOneByIdxChatBotHistoriesDto,
+    );
   }
 }

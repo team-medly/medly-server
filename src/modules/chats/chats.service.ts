@@ -28,7 +28,9 @@ export class ChatsService {
     };
   }
 
-  async requestAzureOpenAiGpt(requestAzureOpenAiGptDto: RequestAzureOpenAiGptDto) {
+  async requestAzureOpenAiGpt(
+    requestAzureOpenAiGptDto: RequestAzureOpenAiGptDto,
+  ) {
     const endpoint = process.env['AZURE_OPENAI_ENDPOINT'];
     const apiKey = process.env['AZURE_OPENAI_API_KEY'];
 

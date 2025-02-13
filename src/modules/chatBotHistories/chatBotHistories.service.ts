@@ -27,7 +27,9 @@ export class ChatBotHistoriesService {
     return this.chatBotHistoriesRepository.save(chatBot);
   }
 
-  async findOneByQueryIdx(findOneByQueryIdxChatBotHistoriesDto: FindOneByQueryIdxChatBotHistoriesDto): Promise<ChatBotHistoriesEntity> {
+  async findOneByQueryIdx(
+    findOneByQueryIdxChatBotHistoriesDto: FindOneByQueryIdxChatBotHistoriesDto,
+  ): Promise<ChatBotHistoriesEntity> {
     const chatUser = new ChatUserHistoriesEntity();
     chatUser.idx = findOneByQueryIdxChatBotHistoriesDto.queryIdx;
     return this.chatBotHistoriesRepository.findOne({
@@ -37,7 +39,9 @@ export class ChatBotHistoriesService {
     });
   }
 
-  async findAllByDoctorIdx(findAllByDoctorIdxChatBotHistoriesDto: FindAllByDoctorIdxChatBotHistoriesDto): Promise<ChatBotHistoriesEntity[]> {
+  async findAllByDoctorIdx(
+    findAllByDoctorIdxChatBotHistoriesDto: FindAllByDoctorIdxChatBotHistoriesDto,
+  ): Promise<ChatBotHistoriesEntity[]> {
     const chatUser = new ChatUserHistoriesEntity();
     chatUser.doctor = new DoctorsEntity();
     chatUser.doctor.idx = findAllByDoctorIdxChatBotHistoriesDto.doctorIdx;
@@ -48,7 +52,9 @@ export class ChatBotHistoriesService {
     });
   }
 
-  async deleteOneByIdx(deleteOneByIdxChatBotHistoriesDto: DeleteOneByIdxChatBotHistoriesDto) {
+  async deleteOneByIdx(
+    deleteOneByIdxChatBotHistoriesDto: DeleteOneByIdxChatBotHistoriesDto,
+  ) {
     const chatBot = await this.chatBotHistoriesRepository.findOne({
       where: {
         idx: deleteOneByIdxChatBotHistoriesDto.idx,
