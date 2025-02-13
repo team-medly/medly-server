@@ -3,7 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 
 import { UserRecordsEntity } from './entity/userRecords.entity';
-import { handlingError } from 'src/common/utils/handlingError';
+import { handlingError } from '../../common/utils/handlingError';
+import { GetPatientListReqQueryDto } from './dto/reqQuery.dto';
+import { GetPatientListResDto } from './dto/resBody.dto';
 
 @Injectable()
 export class UserRecordsService {
@@ -38,6 +40,47 @@ export class UserRecordsService {
       throw err;
     } finally {
       await queryRunner.release();
+    }
+  }
+
+  async getPatientList(
+    query?: GetPatientListReqQueryDto,
+  ): Promise<GetPatientListResDto> {
+    try {
+      const queryBuilder = this.userRecordsRepo
+        .createQueryBuilder('userRecords')
+        .leftJoinAndSelect('userRecords.user', 'user')
+        .where('user.deletedAt IS NULL')
+        .andWhere('userRecords.deletedAt IS NULL');
+
+      if (query?.name) {
+        queryBuilder.andWhere('user.name LIKE :name', {
+          name: `%${decodeURIComponent(query.name)}%`,
+        });
+      }
+      if (query?.patientId) {
+        queryBuilder.andWhere('user.patientId = :patientId', {
+          patientId: query.patientId,
+        });
+      }
+
+      queryBuilder.orderBy('userRecords.scheduledAt', 'DESC');
+
+      const records = await queryBuilder.getMany();
+      const patients = records.map((record) => ({
+        name: record.user.name,
+        patientId: record.user.patientId,
+        dateOfBirth: record.user.dateOfBirth,
+        scheduledAt: record.scheduledAt,
+        status: record.status,
+      }));
+
+      return {
+        patients,
+        total: patients.length,
+      };
+    } catch (err) {
+      handlingError(err);
     }
   }
 }
