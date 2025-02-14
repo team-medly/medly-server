@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -32,6 +33,7 @@ export class ChatsController {
 
   @Post(':doctorIdx')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: 'Azure OpenAI GPT 모델에 요청',
     description: 'Azure OpenAI GPT 모델에 요청',
@@ -51,6 +53,7 @@ export class ChatsController {
 
   @Get(':doctorIdx')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: '특정 사용자의 챗봇 Q&A 모두 불러오기',
     description: '특정 사용자의 챗봇 Q&A 데이터를 모두 불러옵니다.',

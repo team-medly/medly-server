@@ -8,10 +8,12 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { ChatUserHistoriesService } from './chatUserHistories.service';
 import { CreateOneChatUserHistoriesDto } from './dto/CreateOneChatUserHistories.dto';
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -21,6 +23,7 @@ import {
 import { ChatUserHistoriesEntity } from './entities/chatUserHistories.entity';
 import { FindAllByDoctorIdxChatUserHistoriesDto } from './dto/FindAllByDoctorIdxChatUserHistories.dto';
 import { DeleteOneChatUserHistoriesDto } from './dto/DeleteOneChatUserHistories.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('챗봇 API')
 @Controller('chats/user')
@@ -30,6 +33,8 @@ export class ChatUserHistoriesController {
   ) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: '사용자 챗봇 쿼리 저장',
     description: '사용자가 챗봇에 질의한 쿼리 문자열을 DB에 저장한다.',
@@ -46,6 +51,8 @@ export class ChatUserHistoriesController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: '사용자 기준, 챗봇 쿼리 모두 불러오기',
     description: 'DB에 저장된 사용자의 챗봇 쿼리 문자열들을 불러온다.',
@@ -66,6 +73,8 @@ export class ChatUserHistoriesController {
   }
 
   @Delete(':idx')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: '사용자 챗봇 쿼리 삭제',
     description:

@@ -101,6 +101,13 @@ export class ChatsService {
     }
   }
 
+  // axios 사용하여 외부 flask 서버에 요청
+  // async getChatbotAnswer() {
+  //   try {
+  //     const response = await 
+  //   }
+  // }
+
   async findAll(
     findAllChatsParamDto: FindAllChatsParamDto,
     findAllChatsQueryDto: FindAllChatsQueryDto,

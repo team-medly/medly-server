@@ -8,10 +8,12 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { ChatBotHistoriesService } from './chatBotHistories.service';
 import { CreateOneChatBotHistoriesDto } from './dto/CreateOneChatBotHistories.dto';
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -21,6 +23,7 @@ import {
 import { FindOneByQueryIdxChatBotHistoriesDto } from './dto/FindOneByQueryIdxChatBotHistories.dto';
 import { FindAllByDoctorIdxChatBotHistoriesDto } from './dto/FindAllByDoctorIdxChatBotHistories.dto';
 import { DeleteOneByIdxChatBotHistoriesDto } from './dto/DeleteOneByIdxChatBotHistories.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('챗봇 API')
 @Controller('chats/bot')
@@ -30,6 +33,8 @@ export class ChatBotHistoriesController {
   ) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: '사용자 질문에 대한 챗봇 답변 저장',
     description:
@@ -45,6 +50,8 @@ export class ChatBotHistoriesController {
   }
 
   @Get(':queryIdx')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: '사용자 질문에 대한 챗봇 답변 불러오기',
     description: '사용자 질문에 대한 챗봇의 답변 문자열을 DB에서 불러온다.',
@@ -65,6 +72,8 @@ export class ChatBotHistoriesController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: '사용자 기준, 챗봇 답변 모두 불러오기',
     description: '사용자의 모든 질문에 대한 챗봇 답변들을 모두 불러온다.',
@@ -85,6 +94,8 @@ export class ChatBotHistoriesController {
   }
 
   @Delete(':idx')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: '사용자 질문에 대한 챗봇 답변 삭제',
     description:
