@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateOneChatBotHistoriesDto } from './dto/CreateOneChatBotHistories.dto';
 import { ChatBotHistoriesEntity } from './entities/chatBotHistories.entity';
 import { ChatUserHistoriesEntity } from '../chatUserHistories/entities/chatUserHistories.entity';
@@ -12,26 +16,61 @@ import { DeleteOneByIdxChatBotHistoriesDto } from './dto/DeleteOneByIdxChatBotHi
 @Injectable()
 export class ChatBotHistoriesService {
   constructor(
+    @InjectRepository(ChatUserHistoriesEntity)
+    private chatUserHistoriesRepository: Repository<ChatUserHistoriesEntity>,
     @InjectRepository(ChatBotHistoriesEntity)
     private chatBotHistoriesRepository: Repository<ChatBotHistoriesEntity>,
   ) {}
 
-  async createOne(createOneChatBotHistoriesDto: CreateOneChatBotHistoriesDto) {
+  async createOne(
+    createOneChatBotHistoriesDto: CreateOneChatBotHistoriesDto,
+    doctorIdx: number,
+  ) {
     const chatBot = new ChatBotHistoriesEntity();
     chatBot.answer = createOneChatBotHistoriesDto.answer;
-    chatBot.chatUserHistory = new ChatUserHistoriesEntity();
-    chatBot.chatUserHistory.idx = createOneChatBotHistoriesDto.queryIdx;
+    chatBot.citation = createOneChatBotHistoriesDto.citation;
+
+    const chatUser = await this.chatUserHistoriesRepository.findOne({
+      where: {
+        idx: createOneChatBotHistoriesDto.queryIdx,
+      },
+      relations: {
+        doctor: true,
+      },
+    });
+
+    if (!chatUser) {
+      throw new NotFoundException('ChatUserHistories not found');
+    } else if (chatUser.doctor.idx !== +doctorIdx) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+    chatBot.chatUserHistory = chatUser;
+
     return this.chatBotHistoriesRepository.save(chatBot);
   }
 
   async findOneByQueryIdx(
     findOneByQueryIdxChatBotHistoriesDto: FindOneByQueryIdxChatBotHistoriesDto,
+    doctorIdx: number,
   ): Promise<ChatBotHistoriesEntity> {
-    const chatUser = new ChatUserHistoriesEntity();
-    chatUser.idx = findOneByQueryIdxChatBotHistoriesDto.queryIdx;
+    const chatUser = await this.chatUserHistoriesRepository.findOne({
+      where: {
+        idx: findOneByQueryIdxChatBotHistoriesDto.queryIdx,
+      },
+      relations: {
+        doctor: true,
+      },
+    });
+
+    if (!chatUser) {
+      throw new NotFoundException('ChatUserHistories not found');
+    } else if (chatUser.doctor.idx !== +doctorIdx) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
     return this.chatBotHistoriesRepository.findOne({
       where: {
-        chatUserHistory: chatUser,
+        chatUserHistory: { idx: chatUser.idx },
       },
     });
   }
@@ -42,6 +81,7 @@ export class ChatBotHistoriesService {
     const chatUser = new ChatUserHistoriesEntity();
     chatUser.doctor = new DoctorsEntity();
     chatUser.doctor.idx = findAllByDoctorIdxChatBotHistoriesDto.doctorIdx;
+
     return this.chatBotHistoriesRepository.find({
       where: {
         chatUserHistory: chatUser,
@@ -51,13 +91,27 @@ export class ChatBotHistoriesService {
 
   async deleteOneByIdx(
     deleteOneByIdxChatBotHistoriesDto: DeleteOneByIdxChatBotHistoriesDto,
+    doctorIdx: number,
   ) {
     const chatBot = await this.chatBotHistoriesRepository.findOne({
       where: {
         idx: deleteOneByIdxChatBotHistoriesDto.idx,
       },
+      relations: {
+        chatUserHistory: {
+          doctor: true,
+        },
+      },
     });
-    return this.chatBotHistoriesRepository.softRemove(chatBot);
+
+    if (chatBot.chatUserHistory.doctor.idx !== +doctorIdx) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    const removed = await this.chatBotHistoriesRepository.softRemove(chatBot);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { chatUserHistory, ...result } = removed;
+    return result;
   }
 
   // findOne(id: number) {

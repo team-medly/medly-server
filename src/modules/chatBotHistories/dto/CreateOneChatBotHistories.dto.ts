@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { FindOneByQueryIdxChatBotHistoriesDto } from './FindOneByQueryIdxChatBotHistories.dto';
 
 export class CreateOneChatBotHistoriesDto extends FindOneByQueryIdxChatBotHistoriesDto {
@@ -10,4 +10,12 @@ export class CreateOneChatBotHistoriesDto extends FindOneByQueryIdxChatBotHistor
   })
   @IsNotEmpty()
   answer: string;
+
+  @ApiProperty({
+    description: '챗봇 답변 문자열에 대한 인용문',
+    example: 'a result of RAG',
+    required: true,
+  })
+  @IsOptional()
+  citation: string;
 }

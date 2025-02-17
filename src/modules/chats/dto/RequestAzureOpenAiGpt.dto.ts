@@ -1,23 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { FindAllChatsParamDto } from './FindAllChats.dto';
+import { GetChatbotAnswerDto } from './GetChatbotAnswer.dto';
 
-export class RequestAzureOpenAiGptDto {
-  @ApiProperty({
-    description: '',
-    example: '',
-    required: true,
-  })
-  @IsNotEmpty()
-  @IsString()
-  messages: string;
-}
+export class RequestAzureOpenAiGptDto extends PickType(GetChatbotAnswerDto, [
+  'messages',
+]) {}
 
-export class RequestAzureOpenAiGptParamDto {
-  @ApiProperty({
-    description: '',
-    example: '',
-    required: true,
-  })
-  @IsNotEmpty()
-  doctorIdx: number;
-}
+export class RequestAzureOpenAiGptParamDto extends FindAllChatsParamDto {}

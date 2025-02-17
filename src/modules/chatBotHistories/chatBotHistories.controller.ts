@@ -9,6 +9,8 @@ import {
   HttpException,
   HttpStatus,
   UseGuards,
+  Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ChatBotHistoriesService } from './chatBotHistories.service';
 import { CreateOneChatBotHistoriesDto } from './dto/CreateOneChatBotHistories.dto';
@@ -24,6 +26,7 @@ import { FindOneByQueryIdxChatBotHistoriesDto } from './dto/FindOneByQueryIdxCha
 import { FindAllByDoctorIdxChatBotHistoriesDto } from './dto/FindAllByDoctorIdxChatBotHistories.dto';
 import { DeleteOneByIdxChatBotHistoriesDto } from './dto/DeleteOneByIdxChatBotHistories.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Request } from 'express';
 
 @ApiTags('챗봇 API')
 @Controller('chats/bot')
@@ -44,9 +47,14 @@ export class ChatBotHistoriesController {
   @ApiNotFoundResponse({ description: '저장 실패' })
   @ApiInternalServerErrorResponse({ description: '저장 실패' })
   async createOne(
+    @Req() req: Request,
     @Body() createOneChatBotHistoriesDto: CreateOneChatBotHistoriesDto,
   ) {
-    return this.chatBotHistoriesService.createOne(createOneChatBotHistoriesDto);
+    const doctorIdx = req.user?.idx;
+    return this.chatBotHistoriesService.createOne(
+      createOneChatBotHistoriesDto,
+      doctorIdx,
+    );
   }
 
   @Get(':queryIdx')
@@ -60,14 +68,17 @@ export class ChatBotHistoriesController {
   @ApiNotFoundResponse({ description: '불러오기 실패' })
   @ApiInternalServerErrorResponse({ description: '불러오기 실패' })
   async findOneByQueryIdx(
+    @Req() req: Request,
     @Param()
     findOneByQueryIdxChatBotHistoriesDto: FindOneByQueryIdxChatBotHistoriesDto,
   ) {
     if (!findOneByQueryIdxChatBotHistoriesDto) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
+    const doctorIdx = req.user?.idx;
     return this.chatBotHistoriesService.findOneByQueryIdx(
       findOneByQueryIdxChatBotHistoriesDto,
+      doctorIdx,
     );
   }
 
@@ -82,12 +93,19 @@ export class ChatBotHistoriesController {
   @ApiNotFoundResponse({ description: '불러오기 실패' })
   @ApiInternalServerErrorResponse({ description: '불러오기 실패' })
   async findAllByDoctorIdx(
+    @Req() req: Request,
     @Query()
     findAllByDoctorIdxChatBotHistoriesDto: FindAllByDoctorIdxChatBotHistoriesDto,
   ) {
     if (!findAllByDoctorIdxChatBotHistoriesDto) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
+    const doctorIdx = req.user?.idx;
+
+    if (findAllByDoctorIdxChatBotHistoriesDto.doctorIdx != doctorIdx) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
     return this.chatBotHistoriesService.findAllByDoctorIdx(
       findAllByDoctorIdxChatBotHistoriesDto,
     );
@@ -105,11 +123,14 @@ export class ChatBotHistoriesController {
   @ApiNotFoundResponse({ description: '삭제 실패' })
   @ApiInternalServerErrorResponse({ description: '삭제 실패' })
   async deleteOneByIdx(
+    @Req() req: Request,
     @Param()
     deleteOneByIdxChatBotHistoriesDto: DeleteOneByIdxChatBotHistoriesDto,
   ) {
+    const doctorIdx = req.user?.idx;
     return this.chatBotHistoriesService.deleteOneByIdx(
       deleteOneByIdxChatBotHistoriesDto,
+      doctorIdx,
     );
   }
 }

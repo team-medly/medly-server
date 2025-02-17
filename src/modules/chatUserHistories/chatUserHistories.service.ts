@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateOneChatUserHistoriesDto } from './dto/CreateOneChatUserHistories.dto';
 import { ChatUserHistoriesEntity } from './entities/chatUserHistories.entity';
 import { Repository } from 'typeorm';
@@ -19,6 +19,7 @@ export class ChatUserHistoriesService {
   ) {
     const chatUser = new ChatUserHistoriesEntity();
     chatUser.query = createOneChatUserHistoriesDto.query;
+    chatUser.model = createOneChatUserHistoriesDto.model;
     chatUser.doctor = new DoctorsEntity();
     chatUser.doctor.idx = createOneChatUserHistoriesDto.doctorIdx;
     return this.chatUserHistoriesRepository.save(chatUser);
@@ -38,6 +39,7 @@ export class ChatUserHistoriesService {
 
   async deleteOneByIdx(
     deleteOneChatUserHistoriesDto: DeleteOneChatUserHistoriesDto,
+    doctorIdx: number,
   ) {
     const chatUser = await this.chatUserHistoriesRepository.findOne({
       where: {
@@ -47,6 +49,11 @@ export class ChatUserHistoriesService {
         chatBotHistory: true,
       },
     });
+
+    if (chatUser.doctor.idx !== +doctorIdx) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
     return this.chatUserHistoriesRepository.softRemove(chatUser);
   }
 }

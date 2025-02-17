@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsIn, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsIn, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class FindAllChatsParamDto {
   @ApiProperty({
@@ -18,6 +18,7 @@ export class FindAllChatsQueryDto {
     required: false,
   })
   @IsOptional()
-  @IsIn(['문헌 검색', 'FAQ', '의료 지식 A', '의료 지식 B'])
+  @IsString()
+  @IsIn(['문헌 검색', 'FAQ', '의료 지식 A', 'MedBioGPT'])
   model: string;
 }

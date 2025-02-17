@@ -35,6 +35,13 @@ export class ChatBotHistoriesEntity {
   })
   answer: string;
 
+  @Column({
+    type: 'text',
+    comment: ' 챗봇 답변 문자열에 대한 인용문',
+    nullable: true,
+  })
+  citation: string;
+
   @CreateDateColumn({
     name: 'createdAt',
     comment: '답변 생성일',
