@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PatientRecordResponseDto {
+  @ApiProperty({ example: 1 })
+  idx: number;
+
   @ApiProperty({ example: '안의진' })
   name: string;
 
@@ -18,6 +21,12 @@ export class PatientRecordResponseDto {
     description: 'false: 설명 필요, true: 설명 완료',
   })
   status: boolean;
+
+  @ApiProperty({ example: '척추 디스크 수술' })
+  nameOfSurgery: string;
+
+  @ApiProperty({ example: 'L4-L5 요추 디스크 제거술' })
+  surgeryRecord: string;
 }
 
 export class GetPatientListResDto {

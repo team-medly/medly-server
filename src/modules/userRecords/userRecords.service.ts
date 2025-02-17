@@ -68,11 +68,14 @@ export class UserRecordsService {
 
       const records = await queryBuilder.getMany();
       const patients = records.map((record) => ({
+        idx: record.idx,
         name: record.user.name,
         patientId: record.user.patientId,
         dateOfBirth: record.user.dateOfBirth,
         scheduledAt: record.scheduledAt,
         status: record.status,
+        nameOfSurgery: record.nameOfSurgery,
+        surgeryRecord: record.surgeryRecord,
       }));
 
       return {
