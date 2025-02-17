@@ -47,7 +47,7 @@ jobs:
           chmod 400 $AZURE_VM_PEM_KEY_FILENAME
           
           ssh -i $AZURE_VM_PEM_KEY_FILENAME -o StrictHostKeyChecking=no $VM_SSH_ADDR "sudo systemctl stop medly; rm -rf $UPLOAD_PATH/*"
-          scp -i $AZURE_VM_PEM_KEY_FILENAME -o StrictHostKeyChecking=no -r medly-server-$current_datetime.zip $VM_SSH_ADDR:$UPLOAD_PATH/
+          scp -i $AZURE_VM_PEM_KEY_FILENAME -o StrictHostKeyChecking=no -r ./medly-server-$current_datetime.zip $VM_SSH_ADDR:$UPLOAD_PATH/
           ssh -i $AZURE_VM_PEM_KEY_FILENAME -o StrictHostKeyChecking=no $VM_SSH_ADDR "cd $UPLOAD_PATH && unzip -o medly-server-$current_datetime.zip && sudo systemctl start medly && sudo systemctl restart nginx"
 
 
