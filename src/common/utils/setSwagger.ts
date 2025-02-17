@@ -11,7 +11,7 @@ export function setSwagger(app: INestApplication): void {
       {
         type: 'apiKey',
         description: `jwt 요청 헤더 형식은 'auth: {jwt-token}' 입니다.`,
-        name: 'auth',
+        name: 'Authorization',
         in: 'header',
         bearerFormat: 'JWT',
       },

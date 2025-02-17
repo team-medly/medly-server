@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ChatUserHistoriesController } from './chatUserHistories.controller';
 import { ChatUserHistoriesService } from './chatUserHistories.service';
+import { CreateOneChatUserHistoriesDto } from './dto/CreateOneChatUserHistories.dto';
 import { ChatUserHistoriesEntity } from './entities/chatUserHistories.entity';
-import { DoctorsEntity } from '../doctors/entities/doctor.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 describe('ChatUserHistoriesController', () => {
   let chatUserHistoriesController: ChatUserHistoriesController;
@@ -31,6 +32,7 @@ describe('ChatUserHistoriesController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [TypeOrmModule.forFeature([ChatUserHistoriesEntity])],
       controllers: [ChatUserHistoriesController],
       providers: [ChatUserHistoriesService],
     }).compile();
@@ -41,6 +43,16 @@ describe('ChatUserHistoriesController', () => {
     chatUserHistoriesService = module.get<ChatUserHistoriesService>(
       ChatUserHistoriesService,
     );
+  });
+
+  describe('createOne', () => {
+    const createOneChatUserHistoriesDto: CreateOneChatUserHistoriesDto = {
+      query: 'test',
+      doctorIdx: 1,
+    };
+    expect(
+      chatUserHistoriesService.createOne(createOneChatUserHistoriesDto),
+    ).toBeInstanceOf(ChatUserHistoriesEntity);
   });
 
   it('should be defined', () => {
