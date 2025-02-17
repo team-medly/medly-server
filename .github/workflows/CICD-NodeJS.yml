@@ -39,15 +39,15 @@ jobs:
       - name: Deploy to Azure VM instance & Restart Nginx and medly service daemon
         env:
           VM_SSH_ADDR: azureuser@20.55.199.98
-          UPLOAD_DIR: /home/azureuser/medly
+          UPLOAD_PATH: /home/azureuser/medly
           AZURE_VM_PEM_KEY: ${{ secrets.AZURE_VM_PEM_KEY }}
           AZURE_VM_PEM_KEY_FILENAME: 3rd-prj-team3-eastus2-vm.pem
         run: |
           echo "$AZURE_VM_PEM_KEY" > $AZURE_VM_PEM_KEY_FILENAME
           chmod 400 $AZURE_VM_PEM_KEY_FILENAME
           
-          ssh -i $AZURE_VM_PEM_KEY_FILENAME -o StrictHostKeyChecking=no $VM_SSH_ADDR "sudo systemctl stop medly"
-          scp -i $AZURE_VM_PEM_KEY_FILENAME -o StrictHostKeyChecking=no medly-server-$current_datetime.zip $VM_SSH_ADDR:$UPLOAD_DIR/
-          ssh -i $AZURE_VM_PEM_KEY_FILENAME $VM_SSH_ADDR "cd $UPLOAD_DIR && unzip -o medly-server-$current_datetime.zip && sudo systemctl start medly && sudo systemctl restart nginx"
+          ssh -i $AZURE_VM_PEM_KEY_FILENAME -o StrictHostKeyChecking=no $VM_SSH_ADDR "sudo systemctl stop medly; rm -rf $UPLOAD_PATH/*"
+          scp -i $AZURE_VM_PEM_KEY_FILENAME -o StrictHostKeyChecking=no -r medly-server-$current_datetime.zip $VM_SSH_ADDR:$UPLOAD_PATH/
+          ssh -i $AZURE_VM_PEM_KEY_FILENAME -o StrictHostKeyChecking=no $VM_SSH_ADDR "cd $UPLOAD_PATH && unzip -o medly-server-$current_datetime.zip && sudo systemctl start medly && sudo systemctl restart nginx"
 
 
