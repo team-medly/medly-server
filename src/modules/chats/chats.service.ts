@@ -20,6 +20,23 @@ import { HttpService } from '@nestjs/axios';
 import { GetChatbotAnswerDto } from './dto/GetChatbotAnswer.dto';
 import { firstValueFrom } from 'rxjs';
 
+// citation HTML 문자열을 파싱하는 헬퍼 함수
+function parseCitation(citation: string): { name: string; content: string }[] {
+  if (!citation) return [];
+  // 각 <details> 블록에서 <summary>와 첫번째 <span>의 내용을 추출 (예시)
+  const regex =
+    /<details>[\s\S]*?<summary>(.*?)<\/summary>[\s\S]*?<span>(.*?)<\/span>[\s\S]*?<\/details>/g;
+  const citations: { name: string; content: string }[] = [];
+  let match;
+  while ((match = regex.exec(citation)) !== null) {
+    citations.push({
+      name: match[1].trim(),
+      content: match[2].trim(),
+    });
+  }
+  return citations;
+}
+
 @Injectable()
 export class ChatsService {
   constructor(
@@ -165,7 +182,7 @@ export class ChatsService {
         model: getChatbotAnswerDto.model,
       });
 
-      this.chatBotHistoriesService.createOne(
+      const answer = await this.chatBotHistoriesService.createOne(
         {
           answer: response.data.response,
           citation: response.data.citations,
@@ -174,7 +191,23 @@ export class ChatsService {
         getChatbotAnswerDto.doctorIdx,
       );
 
-      return response.data;
+      console.log(query);
+      console.log(answer);
+
+      return [
+        {
+          idx: query.idx,
+          text: query.query,
+          type: 'sent',
+          citation: [],
+        },
+        {
+          idx: answer.idx,
+          text: answer.answer,
+          type: 'received',
+          citation: parseCitation(answer.citation || ''),
+        },
+      ];
     } catch (err) {
       console.log(err);
       handlingError(err);
@@ -200,18 +233,39 @@ export class ChatsService {
       },
     });
 
-    const results = histories.reduce(
-      (result, history) => {
-        result.citations.push(history.chatBotHistory.citation || '');
-        result.histories.push([
-          history.query,
-          history.chatBotHistory?.answer || '',
-        ]);
-        return result;
-      },
-      { citations: [] as string[], histories: [] as [string, string][] },
-    );
+    // 각 기록에서 부모의 query와 자식의 answer를 분리하여 flat array로 구성
+    const messages = histories.flatMap((history) => {
+      const sentMessage = {
+        idx: history.idx,
+        text: history.query,
+        type: 'sent', // 부모 엔티티의 경우
+        citation: [] as { name: string; content: string }[],
+      };
 
-    return { ...results, response: '' };
+      const receivedMessage = {
+        idx: history.chatBotHistory?.idx,
+        text: history.chatBotHistory?.answer || '',
+        type: 'received', // chatBotHistory인 경우
+        citation: parseCitation(history.chatBotHistory?.citation || ''),
+      };
+
+      return [sentMessage, receivedMessage];
+    });
+
+    return messages;
+
+    // const results = histories.reduce(
+    //   (result, history) => {
+    //     result.citations.push(history.chatBotHistory.citation || '');
+    //     result.histories.push([
+    //       history.query,
+    //       history.chatBotHistory?.answer || '',
+    //     ]);
+    //     return result;
+    //   },
+    //   { citations: [] as string[], histories: [] as [string, string][] },
+    // );
+
+    // return { ...results, response: '' };
   }
 }
