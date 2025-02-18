@@ -50,7 +50,7 @@ describe('ChatUserHistoriesService', () => {
       createdAt: new Date(),
       deletedAt: new Date(),
     };
-    mockChatUserHistoriesService.createOne.mockResolvedValue()
+    mockChatUserHistoriesService.createOne.mockResolvedValue();
     const result = await service.createOne(createOneChatUserHistoriesDto);
     console.log(result);
     expect(result).toEqual(mockChatUserHistoriesService.createOne());

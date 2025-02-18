@@ -25,7 +25,7 @@ export class UserRecordsEntity {
   nameOfSurgery: string;
 
   @Column({
-    type: 'varchar',
+    type: 'text',
     comment: '수술 상세 기록 내용',
   })
   surgeryRecord: string;
