@@ -108,7 +108,7 @@ export class UserRecordsController {
         }
       },
       limits: {
-        fileSize: 1024 * 1024 * 30, // 30MB
+        fileSize: 1024 * 1024 * 50, // 50MB
       },
     }),
   )
