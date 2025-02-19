@@ -192,6 +192,7 @@ export class UserRecordsService {
       );
 
       const blobName = uploadResponse.data.blob_name;
+      const filePath = uploadResponse.data.file_url;
       console.log('[Step 3] File uploaded successfully:', uploadResponse.data);
 
       // 2. Convert to text using STT API
@@ -233,6 +234,7 @@ export class UserRecordsService {
       };
 
       existingRecord.surgeryRecord = JSON.stringify(surgeryContent);
+      existingRecord.filePath = filePath;
       const savedRecord = await queryRunner.manager.save(existingRecord);
       await queryRunner.commitTransaction();
       console.log('[Step 6] Record successfully updated:', {
