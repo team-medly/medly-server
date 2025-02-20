@@ -100,13 +100,6 @@ export class UserRecordsController {
           return cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
-      fileFilter: (req, file, cb) => {
-        if (file.mimetype.match(/^audio\/(mpeg|wav|mp4a-latm|aac|ogg)$/)) {
-          cb(null, true);
-        } else {
-          cb(new Error('Unsupported file type'), false);
-        }
-      },
       limits: {
         fileSize: 1024 * 1024 * 30, // 30MB
       },
