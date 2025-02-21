@@ -159,7 +159,7 @@ export class ChatsService {
     const flaskUrl =
       getChatbotAnswerDto.model === '문헌 검색'
         ? 'https://chatbots-atcagjapebcjb7hb.eastus2-01.azurewebsites.net/chat'
-        : getChatbotAnswerDto.model === 'FAQ'
+        : getChatbotAnswerDto.model === 'PatientCareGPT'
           ? 'https://patientcaregpt-webapp-e7gpcqbyhsd6hvcj.eastus2-01.azurewebsites.net/chat'
           : getChatbotAnswerDto.model === 'MedSurgGPT'
             ? 'https://doc-flask-app-aefrh4bafge6ageb.eastus2-01.azurewebsites.net/chat'

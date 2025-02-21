@@ -19,6 +19,6 @@ export class FindAllChatsQueryDto {
   })
   @IsOptional()
   @IsString()
-  @IsIn(['문헌 검색', 'FAQ', 'MedSurgGPT', 'MedBioGPT'])
+  @IsIn(['문헌 검색', 'PatientCareGPT', 'MedSurgGPT', 'MedBioGPT'])
   model: string;
 }

@@ -8,7 +8,7 @@ export class GetChatbotAnswerDto extends FindAllChatsParamDto {
     example: '문헌 검색',
     required: true,
   })
-  @IsIn(['문헌 검색', 'FAQ', 'MedSurgGPT', 'MedBioGPT'])
+  @IsIn(['문헌 검색', 'PatientCareGPT', 'MedSurgGPT', 'MedBioGPT'])
   @IsString()
   @IsNotEmpty()
   model: string;
